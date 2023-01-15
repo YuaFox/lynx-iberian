@@ -1,0 +1,16 @@
+# ide
+.idea
+.vscode
+
+# gradle
+.gradle
+gradle
+
+# build
+bin
+build
+
+# project files
+/config
+/storage
+/plugins
