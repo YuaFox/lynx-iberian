@@ -1,4 +1,4 @@
-package dev.yua.lynxiberian.drivers.gatherer;
+package dev.yua.lynxiberian.drivers;
 
 import dev.yua.lynxiberian.models.entity.Bucket;
 import org.json.JSONObject;

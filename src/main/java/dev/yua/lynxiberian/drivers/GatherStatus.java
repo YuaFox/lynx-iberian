@@ -1,4 +1,4 @@
-package dev.yua.lynxiberian.drivers.gatherer;
+package dev.yua.lynxiberian.drivers;
 
 public enum GatherStatus {
     OK,

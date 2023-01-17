@@ -10,6 +10,9 @@ gradle
 bin
 build
 
+# node red
+/node-red-data
+
 # project files
 /config
 /storage
