@@ -10,11 +10,11 @@ import dev.yua.lynxiberian.models.entity.Media;
 @Component
 public class RandomExplorerDriver extends ExplorerDriver {
 
-    @Override
-    public String getName() { return "random"; }
-    
     @Autowired
     private MediaDao mediaDao;
+
+    @Override
+    public String getName() { return "random"; }
 
     @Override
     public void onLoad() {

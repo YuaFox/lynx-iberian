@@ -16,6 +16,7 @@ public class PublishController {
     public List<?> index(){
         return LynxiberianApplication.getDriverManager().getPublishDrivers();
     }
+
     @PostMapping(value = "/{driver}", produces = "application/json")
     public List<?> driver(
             @PathVariable(required=false,name="driver") String driver,

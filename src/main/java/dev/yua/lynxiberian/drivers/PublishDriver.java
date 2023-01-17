@@ -1,4 +1,4 @@
-package dev.yua.lynxiberian.drivers.publish;
+package dev.yua.lynxiberian.drivers;
 
 import dev.yua.lynxiberian.drivers.Driver;
 import dev.yua.lynxiberian.models.entity.Media;
