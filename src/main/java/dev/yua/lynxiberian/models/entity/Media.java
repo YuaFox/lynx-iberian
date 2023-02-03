@@ -4,15 +4,15 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.hibernate.annotations.DiscriminatorOptions;
 
 @Entity
 @Table(name="media")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="media_type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("null")
+@DiscriminatorOptions(force = true)
 public class Media implements Serializable {
 
     @Serial

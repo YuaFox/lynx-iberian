@@ -1,8 +1,7 @@
 package dev.yua.lynxiberian.drivers;
 
-import dev.yua.lynxiberian.drivers.Driver;
-import dev.yua.lynxiberian.models.entity.Media;
+import dev.yua.lynxiberian.models.entity.Post;
 
 public abstract class PublishDriver extends Driver {
-    public abstract void publish(Media media);
+    public abstract void publish(Post post);
 }

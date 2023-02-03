@@ -17,3 +17,6 @@ build
 /config
 /storage
 /plugins
+
+# Development
+docker-compose.yml

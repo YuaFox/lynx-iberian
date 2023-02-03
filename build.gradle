@@ -30,6 +30,7 @@ dependencies {
 	implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
 
 	implementation('io.github.redouane59.twitter:twittered:2.16')
+	implementation 'com.github.pengrad:java-telegram-bot-api:6.3.0'
 
 
 }
