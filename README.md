@@ -14,7 +14,7 @@ Get the example project https://github.com/YuaFox/lynx-iberian-example and follo
 1. Go to node-red ( http://localhost:1880 )
 2. Configure lynx-server using the credentials from docker-compose
 
-Host is 172.17.0.1, dont use localhost since is a docker container, port is 6000
+Host is 172.17.0.1, dont use localhost since is a docker container, port is 8080
 
 3. Configure a flow like this: input -> explorer -> pusblisher -> output
 
