@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'dev.yua'
-version = '2023.1'
+version = '2023.2'
 sourceCompatibility = '17'
 
 repositories {
@@ -30,6 +30,8 @@ dependencies {
 	implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
 
 	implementation('io.github.redouane59.twitter:twittered:2.16')
+	implementation 'com.github.pengrad:java-telegram-bot-api:6.3.0'
+	implementation 'com.squareup.okhttp3:okhttp:4.9.1'
 
 
 }

@@ -29,6 +29,7 @@ public class DriverManager {
     }
 
     private void addDriverByType(Driver driver){
+        System.out.println("Adding driver: "+driver.getName());
         if(driver instanceof GathererDriver)
             this.gathererDrivers.put(driver.getName(), (GathererDriver) driver);
         else if(driver instanceof ProcessorDriver)

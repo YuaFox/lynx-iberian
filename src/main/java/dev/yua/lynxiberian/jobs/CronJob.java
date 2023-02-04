@@ -14,6 +14,17 @@ import java.io.IOException;
 @Configuration
 @EnableScheduling
 public class CronJob {
+    /*
+     ┌───────────── second (0-59)
+     │ ┌───────────── minute (0 - 59)
+     │ │ ┌───────────── hour (0 - 23)
+     │ │ │ ┌───────────── day of the month (1 - 31)
+     │ │ │ │ ┌───────────── month (1 - 12) (or JAN-DEC)
+     │ │ │ │ │ ┌───────────── day of the week (0 - 7)
+     │ │ │ │ │ │          (or MON-SUN -- 0 or 7 is Sunday)
+     │ │ │ │ │ │
+     * * * * * *
+     */
     @Scheduled(cron = "0 * * * * *")
     public void everyMinute() {
         this.send("minutely");
@@ -23,7 +34,12 @@ public class CronJob {
         this.send("hourly");
     }
 
-    @Scheduled(cron = "0 0 1 * * *")
+    @Scheduled(cron = "0 0 0 * * *")
+    public void everyDay() {
+        this.send("daily");
+    }
+
+    @Scheduled(cron = "0 0 0 1 * *")
     public void everyMonth() {
         this.send("monthly");
     }
