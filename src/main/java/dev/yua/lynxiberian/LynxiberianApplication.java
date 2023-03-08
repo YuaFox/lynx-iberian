@@ -1,5 +1,6 @@
 package dev.yua.lynxiberian;
 
+import dev.yua.lynxiberian.utils.http.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +13,7 @@ import org.springframework.context.event.EventListener;
 public class LynxiberianApplication {
 
 	public static LynxiberianApplication instance;
+	public static Http http = new Http();
 
 	@Autowired
 	private DriverManager driverManager;

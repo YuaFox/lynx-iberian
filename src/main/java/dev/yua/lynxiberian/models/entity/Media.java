@@ -9,11 +9,11 @@ import org.hibernate.annotations.DiscriminatorOptions;
 
 @Entity
 @Table(name="media")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="media_type", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("null")
 @DiscriminatorOptions(force = true)
-public class Media implements Serializable {
+public class Media implements Serializable, Cloneable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -56,5 +56,16 @@ public class Media implements Serializable {
 
     public void setMeta(String meta) {
         this.meta = meta;
+    }
+
+    @Override
+    public Media clone() {
+        try {
+            Media clone = (Media) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

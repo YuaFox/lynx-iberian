@@ -1,6 +1,7 @@
 package dev.yua.lynxiberian.drivers.processor;
 
 import dev.yua.lynxiberian.drivers.ProcessorDriver;
+import dev.yua.lynxiberian.models.entity.Filter;
 import dev.yua.lynxiberian.models.entity.Media;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 @Component
 public class LocalProcessorDriver extends ProcessorDriver {
@@ -30,7 +32,7 @@ public class LocalProcessorDriver extends ProcessorDriver {
     }
 
     @Override
-    public Media process(JSONObject object) {
+    public List<Media> process(JSONObject object) {
         Path source = Paths.get(object.getString("path"));
         Path fileName = source.getFileName();
         Path destination = Paths.get("storage/local/"+fileName);
@@ -42,6 +44,6 @@ public class LocalProcessorDriver extends ProcessorDriver {
         Media media = new Media();
         media.setPath(destination.toString());
         media.setMeta("local");
-        return media;
+        return List.of(media);
     }
 }
