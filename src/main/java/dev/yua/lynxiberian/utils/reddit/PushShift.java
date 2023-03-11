@@ -27,7 +27,7 @@ public class PushShift {
         }
     }
     public static JSONArray getPosts(String subreddit, long start, long end) {
-        JSONObject data = PushShift.call("https://api.pushshift.io/reddit/search/submission/?subreddit="+subreddit+"&sort_type=created_utc&before="+end+"&after="+start+"&size=1");
+        JSONObject data = PushShift.call("https://api.pushshift.io/reddit/search/submission/?subreddit="+subreddit+"&sort_type=created_utc&before="+end+"&after="+start+"&size=10000");
         return data.getJSONArray("data");
     }
 }

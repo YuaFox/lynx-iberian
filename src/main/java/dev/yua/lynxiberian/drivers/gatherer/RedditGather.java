@@ -29,8 +29,7 @@ public class RedditGather extends GathererDriver {
         if(redditFilters.size() != 1) return;
         RedditFilter filter = (RedditFilter) redditFilters.get(0);
 
-
-        JSONArray posts = PushShift.getPosts(filter.getSubreddit(), 0, 1678183274);
+        JSONArray posts = PushShift.getPosts(filter.getSubreddit(), filter.getStartTime(), filter.getEndTime());
 
         if(posts.length() == 0) return;
 

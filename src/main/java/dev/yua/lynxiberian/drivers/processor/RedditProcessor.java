@@ -5,6 +5,7 @@ import dev.yua.lynxiberian.drivers.ProcessorDriver;
 import dev.yua.lynxiberian.models.entity.Media;
 import dev.yua.lynxiberian.models.entity.RedditMedia;
 import dev.yua.lynxiberian.repositories.RedditMediaRepository;
+import dev.yua.lynxiberian.utils.Ffmpeg;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,9 @@ public class RedditProcessor extends ProcessorDriver {
         RedditMedia media = new RedditMedia();
 
         try {
+            media.setSubreddit(post.getString("subreddit"));
             media.setPermalink(post.getString("id"));
-            media.setAuthor(post.has("author_fullname") ? post.getString("author_fullname") : null);
+            media.setAuthor(post.has("author") ? post.getString("author") : null);
             media.setTag(post.has("link_flair_text") && !post.isNull("link_flair_text") ? post.getString("link_flair_text").trim() : null);
             media.setTitle(post.has("title") ? post.getString("title") : "");
 
@@ -80,6 +82,13 @@ public class RedditProcessor extends ProcessorDriver {
                             }
                         }
                         videoUrl = urlDest + "/" + representation.getJSONObject(videoIndex).getString("BaseURL");
+
+                        String urlLocal = "storage/reddit/"+new URL(videoUrl).getFile().replace("/", ".").substring(1);
+                        File local = LynxiberianApplication.http.download(videoUrl, urlLocal);
+                        if(local.exists() && local.length() > 0){
+                            media.setPath(urlLocal);
+                            return List.of(media);
+                        }else return null;
                     }
                     if(videoDataContent instanceof JSONArray){
                         JSONArray videoDataContentArray = videoData.getJSONObject("MPD").getJSONObject("Period").getJSONArray("AdaptationSet");
@@ -103,7 +112,17 @@ public class RedditProcessor extends ProcessorDriver {
                         videoUrl = urlDest + "/" + videoUrl;
                         audioUrl = urlDest + "/" + audioUrl;
 
-                        // TODO
+                        String urlLocalVideo = "storage/reddit/"+new URL(videoUrl).getFile().replace("/", ".").substring(1);
+                        File localVideo = LynxiberianApplication.http.download(videoUrl, urlLocalVideo);
+                        String urlLocalAudio = "storage/reddit/"+new URL(audioUrl).getFile().replace("/", ".").substring(1);
+                        File localAudio = LynxiberianApplication.http.download(audioUrl, urlLocalAudio);
+
+                        if(localVideo.exists() && localVideo.length() > 0 && localAudio.exists() && localAudio.length() > 0){
+                            Ffmpeg ffmpeg = new Ffmpeg();
+                            File merged = ffmpeg.merge(localVideo, localAudio);
+                            media.setPath(merged.getPath());
+                            return List.of(media);
+                        }else return null;
                     }
                 }else if (isGallery) {
                     boolean bruteforceImages = false;
