@@ -18,10 +18,6 @@ public class RedditFilter implements Filter, Serializable {
 
     @Column(nullable = false)
     private String subreddit;
-    @Column(nullable = false)
-    private int startTime;
-    @Column(nullable = false)
-    private int endTime;
 
     // Filters
     @Column
@@ -47,22 +43,6 @@ public class RedditFilter implements Filter, Serializable {
 
     public void setSubreddit(String subreddit) {
         this.subreddit = subreddit;
-    }
-
-    public int getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(int startTime) {
-        this.startTime = startTime;
-    }
-
-    public int getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(int endTime) {
-        this.endTime = endTime;
     }
 
     public String getTag() {
@@ -93,6 +73,7 @@ public class RedditFilter implements Filter, Serializable {
     public boolean isOk(Media media) {
         if(media instanceof RedditMedia redditMedia){
             if(this.tag != null){
+                if(redditMedia.getTag() == null) return false;
                 if(this.exactTag){
                     if(! redditMedia.getTag().equalsIgnoreCase(this.tag)) return false;
                 }else{

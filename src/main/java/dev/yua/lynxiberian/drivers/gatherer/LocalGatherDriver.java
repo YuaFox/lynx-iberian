@@ -1,5 +1,6 @@
 package dev.yua.lynxiberian.drivers.gatherer;
 
+import dev.yua.lynxiberian.drivers.GatherResults;
 import dev.yua.lynxiberian.drivers.GathererDriver;
 import dev.yua.lynxiberian.models.entity.Filter;
 import dev.yua.lynxiberian.models.entity.Media;
@@ -24,15 +25,15 @@ public class LocalGatherDriver extends GathererDriver {
         this.folder.mkdirs();
         this.folderStorage.mkdirs();
 
-        this.gather(null);
+        this.gather(null, new GatherResults());
     }
 
     @Override
-    public void gather(List<Filter> filters) {
+    public void gather(List<Filter> filters, GatherResults results) {
         for(File file : this.folder.listFiles()){
             JSONObject object = new JSONObject();
             object.put("path", file.getPath());
-            this.save("local", object, filters);
+            this.save("local", object, filters, results);
         }
     }
 }

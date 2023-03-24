@@ -12,6 +12,7 @@ public class RedditMedia extends Media implements Cloneable {
 
     private String permalink;
     private String subreddit;
+    @Column(length = 300)
     private String title;
     private String tag;
 

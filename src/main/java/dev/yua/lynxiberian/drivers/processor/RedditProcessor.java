@@ -160,7 +160,6 @@ public class RedditProcessor extends ProcessorDriver {
                     File local = LynxiberianApplication.http.download(urlDest, urlLocal);
                     if(local.exists() && local.length() > 0){
                         media.setPath(urlLocal);
-                        System.out.println("Yes!!");
                         return List.of(media);
                     }else return null;
                 }

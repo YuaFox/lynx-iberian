@@ -17,11 +17,11 @@ public abstract class GathererDriver extends Driver {
     @Autowired
     private MediaDao mediaDao;
 
-    public abstract void gather(List<Filter> filters);
+    public abstract void gather(List<Filter> filters, GatherResults results);
 
-    public int save(String driverName, JSONObject object, List<Filter> filters){
+    public void save(String driverName, JSONObject object, List<Filter> filters, GatherResults results){
         List<Media> mediaList = LynxiberianApplication.getDriverManager().getProcessorDriver(driverName).process(object);
-        if(mediaList == null) return 0;
+        if(mediaList == null) return;
         for(Media media : mediaList) {
             boolean passed = true;
             if (filters != null) {
@@ -29,9 +29,12 @@ public abstract class GathererDriver extends Driver {
                     passed &= filter.isOk(media);
                 }
             }
-            if (passed)
+            if (passed) {
                 mediaDao.save(media);
+                results.addMediaAdded();
+            }else{
+                results.addMediaFiltered();
+            }
         }
-        return 0;
     }
 }

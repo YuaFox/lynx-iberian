@@ -1,6 +1,5 @@
 package dev.yua.lynxiberian.utils.reddit;
 
-import dev.yua.lynxiberian.models.entity.RedditMedia;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -10,12 +9,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class PushShift {
+public class RedditApi {
 
     private static JSONObject call(String url){
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
+                .header("User-Agent", "linux:lynx-iberian:2023.4 (by /u/yuafox)")
                 .get()
                 .build();
 
@@ -26,8 +26,10 @@ public class PushShift {
             throw new RuntimeException(e);
         }
     }
-    public static JSONArray getPosts(String subreddit, long start, long end) {
-        JSONObject data = PushShift.call("https://api.pushshift.io/reddit/search/submission/?subreddit="+subreddit+"&sort_type=created_utc&before="+end+"&after="+start+"&size=10000");
-        return data.getJSONArray("data");
+    public static JSONObject getPosts(String subreddit, String afterFullName) {
+        JSONObject data = afterFullName != null ?
+                RedditApi.call("https://www.reddit.com/r/"+subreddit+"/new.json?limit=100&after="+afterFullName) :
+                RedditApi.call("https://www.reddit.com/r/"+subreddit+"/new.json?limit=100");
+        return data.getJSONObject("data");
     }
 }
