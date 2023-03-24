@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'dev.yua'
-version = '2023.2'
+version = '2023.4'
 sourceCompatibility = '17'
 
 repositories {
@@ -41,6 +41,10 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+task printVersion {
+	println project.version
 }
 
 jar {

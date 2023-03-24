@@ -1,0 +1,24 @@
+# ide
+.idea
+.vscode
+
+# gradle
+.gradle
+gradle
+gradlew
+gradlew.bat
+
+# build
+bin
+build
+
+# node red
+/node-red-data
+
+# project files
+/config
+/storage
+/plugins
+
+# Development
+docker-compose.yml
