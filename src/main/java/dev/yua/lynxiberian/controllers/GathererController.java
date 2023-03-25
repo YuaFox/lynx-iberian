@@ -1,9 +1,8 @@
 package dev.yua.lynxiberian.controllers;
 
 import dev.yua.lynxiberian.LynxiberianApplication;
-import dev.yua.lynxiberian.drivers.GatherResults;
+import dev.yua.lynxiberian.drivers.GatherResult;
 import dev.yua.lynxiberian.models.entity.Filter;
-import dev.yua.lynxiberian.models.entity.Media;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,11 +11,11 @@ import java.util.List;
 @RequestMapping("/api/v1/drivers/gatherer")
 public class GathererController {
     @PostMapping(value = "/{driver}", produces = "application/json")
-    public GatherResults index(
+    public GatherResult index(
             @PathVariable(required=false,name="driver") String driver,
             @RequestBody List<Filter> filters
         ){
-        GatherResults results = new GatherResults();
+        GatherResult results = new GatherResult();
         LynxiberianApplication.getDriverManager().getGathererDriver(driver).gather(filters, results);
         return results;
     }

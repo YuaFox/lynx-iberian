@@ -1,7 +1,9 @@
 package dev.yua.lynxiberian.drivers.processor;
 
 import dev.yua.lynxiberian.LynxiberianApplication;
+import dev.yua.lynxiberian.drivers.GatherMediaStatus;
 import dev.yua.lynxiberian.drivers.ProcessorDriver;
+import dev.yua.lynxiberian.drivers.ProcessorResult;
 import dev.yua.lynxiberian.models.entity.Media;
 import dev.yua.lynxiberian.models.entity.RedditMedia;
 import dev.yua.lynxiberian.repositories.RedditMediaRepository;
@@ -9,6 +11,7 @@ import dev.yua.lynxiberian.utils.Ffmpeg;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -33,8 +36,9 @@ public class RedditProcessor extends ProcessorDriver {
     }
 
     @Override
-    public List<Media> process(JSONObject post) {
+    public ProcessorResult process(JSONObject post) {
         RedditMedia media = new RedditMedia();
+        ProcessorResult processorResult = new ProcessorResult();
 
         try {
             media.setSubreddit(post.getString("subreddit"));
@@ -54,13 +58,13 @@ public class RedditProcessor extends ProcessorDriver {
             boolean isReddit = "v.redd.it".equals(domain) ||"i.redd.it".equals(domain) || "reddit.com".equals(domain) || (domain != null && domain.contains("/r/"));
 
             // Invalid post
-            if(isRemoved || urlDest == null) return null;
+            if(isRemoved || urlDest == null) return processorResult.setMediaStatus(GatherMediaStatus.EMPTY);
 
             // Duplicated
             {
                 List<RedditMedia> mediaList = repository.permalink(media.getPermalink());
                 if (mediaList !=null && mediaList.size() > 0){
-                    return null;
+                    return processorResult.setMediaStatus(GatherMediaStatus.DUPLICATED);
                 }
             }
 
@@ -87,8 +91,9 @@ public class RedditProcessor extends ProcessorDriver {
                         File local = LynxiberianApplication.http.download(videoUrl, urlLocal);
                         if(local.exists() && local.length() > 0){
                             media.setPath(urlLocal);
-                            return List.of(media);
-                        }else return null;
+                            processorResult.setMediaStatus(GatherMediaStatus.OK).addMedia(media);
+                            return processorResult;
+                        }else return processorResult.setMediaStatus(GatherMediaStatus.ERROR);
                     }
                     if(videoDataContent instanceof JSONArray){
                         JSONArray videoDataContentArray = videoData.getJSONObject("MPD").getJSONObject("Period").getJSONArray("AdaptationSet");
@@ -121,8 +126,9 @@ public class RedditProcessor extends ProcessorDriver {
                             Ffmpeg ffmpeg = new Ffmpeg();
                             File merged = ffmpeg.merge(localVideo, localAudio);
                             media.setPath(merged.getPath());
-                            return List.of(media);
-                        }else return null;
+                            processorResult.setMediaStatus(GatherMediaStatus.OK).addMedia(media);
+                            return processorResult;
+                        }else return processorResult.setMediaStatus(GatherMediaStatus.ERROR);
                     }
                 }else if (isGallery) {
                     boolean bruteforceImages = false;
@@ -151,25 +157,25 @@ public class RedditProcessor extends ProcessorDriver {
                         File local = LynxiberianApplication.http.download(url, urlLocal);
                         if(local.exists() && local.length() > 0){
                             submedia.setPath(urlLocal);
-                            mediaList.add(submedia);
+                            processorResult.setMediaStatus(GatherMediaStatus.OK).addMedia(submedia);
                         }
                     }
-                    return mediaList;
+                    return processorResult;
                 } else if(isImage) {
                     String urlLocal = "storage/reddit/"+new URL(urlDest).getFile().replace("/", ".").substring(1);
                     File local = LynxiberianApplication.http.download(urlDest, urlLocal);
                     if(local.exists() && local.length() > 0){
                         media.setPath(urlLocal);
-                        return List.of(media);
-                    }else return null;
+                        processorResult.setMediaStatus(GatherMediaStatus.OK).addMedia(media);
+                        return processorResult;
+                    }else return processorResult.setMediaStatus(GatherMediaStatus.ERROR);
                 }
             }
-            return null;
-        }catch (Exception e){
+            return processorResult.setMediaStatus(GatherMediaStatus.ERROR);
+        }catch (Exception e) {
             System.err.println("Error");
             e.printStackTrace();
+            return processorResult.setMediaStatus(GatherMediaStatus.ERROR);
         }
-
-        return null;
     }
 }

@@ -1,9 +1,8 @@
 package dev.yua.lynxiberian.drivers.gatherer;
 
-import dev.yua.lynxiberian.drivers.GatherResults;
+import dev.yua.lynxiberian.drivers.GatherResult;
 import dev.yua.lynxiberian.drivers.GathererDriver;
 import dev.yua.lynxiberian.models.entity.Filter;
-import dev.yua.lynxiberian.models.entity.Media;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
@@ -25,11 +24,11 @@ public class LocalGatherDriver extends GathererDriver {
         this.folder.mkdirs();
         this.folderStorage.mkdirs();
 
-        this.gather(null, new GatherResults());
+        this.gather(null, new GatherResult());
     }
 
     @Override
-    public void gather(List<Filter> filters, GatherResults results) {
+    public void gather(List<Filter> filters, GatherResult results) {
         for(File file : this.folder.listFiles()){
             JSONObject object = new JSONObject();
             object.put("path", file.getPath());

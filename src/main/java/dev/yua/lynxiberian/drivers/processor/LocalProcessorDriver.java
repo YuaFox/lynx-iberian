@@ -1,6 +1,8 @@
 package dev.yua.lynxiberian.drivers.processor;
 
+import dev.yua.lynxiberian.drivers.GatherMediaStatus;
 import dev.yua.lynxiberian.drivers.ProcessorDriver;
+import dev.yua.lynxiberian.drivers.ProcessorResult;
 import dev.yua.lynxiberian.models.entity.Filter;
 import dev.yua.lynxiberian.models.entity.Media;
 import org.json.JSONObject;
@@ -32,7 +34,8 @@ public class LocalProcessorDriver extends ProcessorDriver {
     }
 
     @Override
-    public List<Media> process(JSONObject object) {
+    public ProcessorResult process(JSONObject object) {
+        ProcessorResult processorResult = new ProcessorResult();
         Path source = Paths.get(object.getString("path"));
         Path fileName = source.getFileName();
         Path destination = Paths.get("storage/local/"+fileName);
@@ -44,6 +47,6 @@ public class LocalProcessorDriver extends ProcessorDriver {
         Media media = new Media();
         media.setPath(destination.toString());
         media.setMeta("local");
-        return List.of(media);
+        return processorResult.setMediaStatus(GatherMediaStatus.OK).addMedia(media);
     }
 }

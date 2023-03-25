@@ -1,6 +1,7 @@
 package dev.yua.lynxiberian.drivers.gatherer;
 
-import dev.yua.lynxiberian.drivers.GatherResults;
+import dev.yua.lynxiberian.drivers.GatherMediaStatus;
+import dev.yua.lynxiberian.drivers.GatherResult;
 import dev.yua.lynxiberian.drivers.GathererDriver;
 import dev.yua.lynxiberian.models.entity.Filter;
 import dev.yua.lynxiberian.models.entity.RedditFilter;
@@ -24,7 +25,7 @@ public class RedditGather extends GathererDriver {
     }
 
     @Override
-    public void gather(List<Filter> filters, GatherResults results) {
+    public void gather(List<Filter> filters, GatherResult results) {
         List<Filter> redditFilters = filters.stream().filter(f -> f instanceof RedditFilter).toList();
         if(redditFilters.size() == 0) return;
 
@@ -37,7 +38,8 @@ public class RedditGather extends GathererDriver {
 
             String after = null;
             int postAmount = -1;
-            while(postAmount != 0){
+            int postDuplicated = 0;
+            while(postAmount != 0 && postDuplicated < 3){
                 System.out.println("Starting lot");
                 JSONObject listing = RedditApi.getPosts(redditFilter.getSubreddit(), after);
                 after = listing.isNull("after") ? null : listing.getString("after");
@@ -49,9 +51,10 @@ public class RedditGather extends GathererDriver {
 
                 if(postAmount == 0) continue;
 
-                for(int i = 0; i < posts.length(); i++) {
+                for(int i = 0; i < posts.length() && postDuplicated < 3; i++) {
                     JSONObject post = posts.getJSONObject(i).getJSONObject("data");
-                    this.save("reddit", post, List.of(redditFilter), results);
+                    GatherMediaStatus mediaStatus = this.save("reddit", post, List.of(redditFilter), results);
+                    if(mediaStatus == GatherMediaStatus.DUPLICATED) postDuplicated++;
                     try {
                         Thread.sleep(200);
                     } catch (InterruptedException e) {

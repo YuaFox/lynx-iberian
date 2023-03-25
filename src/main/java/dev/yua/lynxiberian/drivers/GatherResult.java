@@ -1,6 +1,6 @@
 package dev.yua.lynxiberian.drivers;
 
-public class GatherResults {
+public class GatherResult {
 
     // TODO: Add failed (duplicated, error)
 
@@ -9,7 +9,7 @@ public class GatherResults {
     private int mediaFiltered = 0;
 
 
-    public GatherResults(){
+    public GatherResult(){
 
     }
 
