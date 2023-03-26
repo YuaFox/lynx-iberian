@@ -1,27 +1,34 @@
 # Lynx-Iberian
 
+## Install
+
+Get the example project https://github.com/YuaFox/lynx-iberian-example and follow the instructions.
+
 ## How to use
 
-[Install node-red dependency](https://github.com/YuaFox/node-red-contrib-lynx-iberian) to manage the bot.
+### Install media
+1. Put your images in config/local
+2. Start lynx-iberian
 
-Run the bot with docker-compose.yml
-```yaml
-version: '3.9'
+### Configure flows
+1. Go to node-red ( http://localhost:1880 )
+2. Configure lynx-server using the credentials from docker-compose
 
-services:
-    lynx:
-        image: lynx-iberian:2023.1
-        ports:
-            - "8080:8080"
-        volumes:
-            - ./config:/config
-            - ./plugins:/app/plugins
-        environment:
-            DB_URL: "mysql://username:password@172.17.0.1/lynxiberian?createDatabaseIfNotExist=true"
-            LYNX_USERNAME: user
-            LYNX_PASSWORD: password
-            NODERED_HOST: 172.17.0.1
-            # Optional: Only if using twitter plugin
-            TWITTER_KEY: ...
-            TWITTER_SECRET: ...
-```
+Host is 172.17.0.1, dont use localhost since is a docker container, port is 8080
+
+3. Configure a flow like this: input -> explorer -> pusblisher -> output
+
+### Available drivers
+
+#### Input
+- minutely
+- hourly
+- daily
+- monthly
+
+#### Explorer
+- **random**: Get a random media
+
+#### Publisher
+- **telegram**: Post on telegram
+- **mastodon**: Post on mastodon
