@@ -1,6 +1,6 @@
-package dev.yua.lynxiberian.drivers;
+package dev.yua.lynxiberian.models;
 
-import dev.yua.lynxiberian.models.entity.Media;
+import dev.yua.lynxiberian.drivers.GatherMediaStatus;
 
 import java.util.ArrayList;
 import java.util.List;

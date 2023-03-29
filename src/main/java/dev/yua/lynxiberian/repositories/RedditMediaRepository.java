@@ -1,6 +1,6 @@
 package dev.yua.lynxiberian.repositories;
 
-import dev.yua.lynxiberian.models.entity.RedditMedia;
+import dev.yua.lynxiberian.models.RedditMedia;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

@@ -4,7 +4,7 @@ import com.tumblr.jumblr.JumblrClient;
 import com.tumblr.jumblr.types.Photo;
 import com.tumblr.jumblr.types.PhotoPost;
 import dev.yua.lynxiberian.drivers.PublishDriver;
-import dev.yua.lynxiberian.models.entity.Post;
+import dev.yua.lynxiberian.models.Post;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -23,8 +23,10 @@ public class TumblrPublisher extends PublishDriver {
 
     @Override
     public void onLoad() {
-        this.client = new JumblrClient(System.getenv("TUMBLR_CONSUMER_KEY"), System.getenv("TUMBLR_CONSUMER_SECRET"));
-        this.client.setToken(System.getenv("TUMBLR_TOKEN_KEY"), System.getenv("TUMBLR_TOKEN_SECRET"));
+        if(System.getenv("TUMBLR_CONSUMER_KEY") != null) {
+            this.client = new JumblrClient(System.getenv("TUMBLR_CONSUMER_KEY"), System.getenv("TUMBLR_CONSUMER_SECRET"));
+            this.client.setToken(System.getenv("TUMBLR_TOKEN_KEY"), System.getenv("TUMBLR_TOKEN_SECRET"));
+        }
     }
 
     @Override
@@ -37,16 +39,23 @@ public class TumblrPublisher extends PublishDriver {
             }else {
                 tumblrPost.setPhoto(new Photo(new File(post.getPath())));
             }
-            if(post.getMetadata() != null && post.getMetadata().containsKey("tags")) {
-                Object tags = post.getMetadata().get("tags");
-                if(tags instanceof List<?>) {
-                    tumblrPost.setTags((List<String>) tags);
+            if(post.getMetadata() != null) {
+                if(post.getMetadata().containsKey("tags")) {
+                    Object tags = post.getMetadata().get("tags");
+                    if (tags instanceof List<?>) {
+                        tumblrPost.setTags((List<String>) tags);
+                    }
+                }
+                if(post.getMetadata().containsKey("source")) {
+                    Object source = post.getMetadata().get("source");
+                    if (source instanceof String) {
+                        tumblrPost.setSource((String) source);
+                    }
                 }
             }
             tumblrPost.save();
         } catch (IllegalAccessException | InstantiationException | IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

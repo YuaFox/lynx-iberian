@@ -1,4 +1,4 @@
-package dev.yua.lynxiberian.models.entity;
+package dev.yua.lynxiberian.models;
 
 import jakarta.persistence.*;
 

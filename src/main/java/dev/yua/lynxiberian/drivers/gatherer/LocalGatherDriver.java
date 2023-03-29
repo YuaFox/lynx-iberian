@@ -1,9 +1,12 @@
 package dev.yua.lynxiberian.drivers.gatherer;
 
-import dev.yua.lynxiberian.drivers.GatherResult;
+import dev.yua.lynxiberian.models.GatherRequest;
+import dev.yua.lynxiberian.models.GatherResult;
 import dev.yua.lynxiberian.drivers.GathererDriver;
-import dev.yua.lynxiberian.models.entity.Filter;
+import dev.yua.lynxiberian.repositories.BucketRepository;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -11,6 +14,10 @@ import java.util.List;
 
 @Component
 public class LocalGatherDriver extends GathererDriver {
+
+    @Autowired
+    private BucketRepository bucketRepository;
+
     File folder;
     File folderStorage;
 
@@ -24,15 +31,29 @@ public class LocalGatherDriver extends GathererDriver {
         this.folder.mkdirs();
         this.folderStorage.mkdirs();
 
-        this.gather(null, new GatherResult());
+        this.gather(null);
     }
 
     @Override
-    public void gather(List<Filter> filters, GatherResult results) {
-        for(File file : this.folder.listFiles()){
-            JSONObject object = new JSONObject();
-            object.put("path", file.getPath());
-            this.save("local", object, filters, results);
+    public GatherResult gather(GatherRequest gatherRequest) {
+        return this.gather(gatherRequest, this.folder);
+    }
+
+    // TODO: Sum of GatherResult
+    private GatherResult gather(GatherRequest gatherRequest, @NonNull File directory) {
+        GatherResult gatherResult = new GatherResult();
+        File[] files = directory.listFiles();
+        if(files == null) return gatherResult;
+
+        for(File file : files){
+            if(file.isDirectory()) {
+                this.gather(new GatherRequest().setBucket(bucketRepository.getBucketByName(file.getName())), file);
+            }else{
+                JSONObject object = new JSONObject();
+                object.put("path", file.getPath());
+                this.save("local", object, gatherRequest);
+            }
         }
+        return gatherResult;
     }
 }

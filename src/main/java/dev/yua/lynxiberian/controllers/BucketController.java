@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.yua.lynxiberian.models.entity.Bucket;
+import dev.yua.lynxiberian.models.Bucket;
 import dev.yua.lynxiberian.repositories.BucketRepository;
 
 @RestController
-@RequestMapping("/api/v1/buckets")
+@RequestMapping("/api/v1/bucket")
 public class BucketController {
 
     @Autowired

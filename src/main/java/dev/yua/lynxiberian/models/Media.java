@@ -1,9 +1,10 @@
-package dev.yua.lynxiberian.models.entity;
+package dev.yua.lynxiberian.models;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DiscriminatorOptions;
 
@@ -16,15 +17,20 @@ import org.hibernate.annotations.DiscriminatorOptions;
 public class Media implements Serializable, Cloneable {
 
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String caption;
     private String path;
-    private String meta;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinTable(name = "bucket_media",
+            joinColumns           = @JoinColumn(name = "media_id",     referencedColumnName = "id"),
+            inverseJoinColumns    = @JoinColumn(name = "bucket_id",      referencedColumnName = "id"))
+    private Bucket bucket;
 
     public Long getId() {
         return id;
@@ -50,14 +56,6 @@ public class Media implements Serializable, Cloneable {
         this.path = path;
     }
 
-    public String getMeta() {
-        return meta;
-    }
-
-    public void setMeta(String meta) {
-        this.meta = meta;
-    }
-
     @Override
     public Media clone() {
         try {
@@ -67,5 +65,13 @@ public class Media implements Serializable, Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    public Bucket getBucket() {
+        return bucket;
+    }
+
+    public void setBucket(Bucket bucket) {
+        this.bucket = bucket;
     }
 }

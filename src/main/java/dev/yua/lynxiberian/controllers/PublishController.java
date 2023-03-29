@@ -2,13 +2,11 @@ package dev.yua.lynxiberian.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import dev.yua.lynxiberian.models.entity.Post;
+import dev.yua.lynxiberian.models.Post;
 import org.springframework.web.bind.annotation.*;
 
 import dev.yua.lynxiberian.LynxiberianApplication;
-import dev.yua.lynxiberian.models.entity.Media;
 
 @RestController
 @RequestMapping("/api/v1/drivers/publisher")

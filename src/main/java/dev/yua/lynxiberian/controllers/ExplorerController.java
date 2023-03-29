@@ -3,7 +3,7 @@ package dev.yua.lynxiberian.controllers;
 import org.springframework.web.bind.annotation.*;
 
 import dev.yua.lynxiberian.LynxiberianApplication;
-import dev.yua.lynxiberian.models.entity.Media;
+import dev.yua.lynxiberian.models.Media;
 
 @RestController
 @RequestMapping("/api/v1/drivers/explorer")
