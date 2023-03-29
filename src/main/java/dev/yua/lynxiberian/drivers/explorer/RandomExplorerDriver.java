@@ -1,6 +1,7 @@
 package dev.yua.lynxiberian.drivers.explorer;
 
 import dev.yua.lynxiberian.drivers.ExplorerDriver;
+import dev.yua.lynxiberian.models.ExplorerRequest;
 import dev.yua.lynxiberian.repositories.MediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,11 @@ public class RandomExplorerDriver extends ExplorerDriver {
     }
 
     @Override
-    public Media getMedia() {
-        return mediaRepository.getRandomMedia();
+    public Media getMedia(ExplorerRequest explorerRequest) {
+        if(explorerRequest.getBucket() == null){
+            return mediaRepository.getRandomMedia();
+        }else{
+            return mediaRepository.getRandomMedia(explorerRequest.getBucket());
+        }
     }
 }
