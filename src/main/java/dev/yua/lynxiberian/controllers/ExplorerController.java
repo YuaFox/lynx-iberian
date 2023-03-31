@@ -2,9 +2,10 @@ package dev.yua.lynxiberian.controllers;
 
 import dev.yua.lynxiberian.models.Bucket;
 import dev.yua.lynxiberian.models.ExplorerRequest;
-import dev.yua.lynxiberian.models.GatherRequest;
 import dev.yua.lynxiberian.repositories.BucketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import dev.yua.lynxiberian.LynxiberianApplication;
@@ -18,19 +19,16 @@ public class ExplorerController {
     private BucketRepository bucketRepository;
     
     @GetMapping(value = "/{driver}", produces = "application/json")
-    public Object index(
+    public ResponseEntity<Media> index(
             @PathVariable(required=false,name="driver") String driver,
-            @RequestBody(required = false) ExplorerRequest explorerRequest
+            @RequestParam(value = "bucket", required = false) String bucketName
         ){
-        if(explorerRequest == null) explorerRequest = new ExplorerRequest();
-        Bucket provisionalBucket = explorerRequest.getBucket();
-        if(provisionalBucket != null){
-            if(provisionalBucket.getName() != null){
-                Bucket bucket = this.bucketRepository.getBucketByName(provisionalBucket.getName());
-                if(bucket == null) return null;
-                explorerRequest.setBucket(bucket);
-            }
+        ExplorerRequest explorerRequest = new ExplorerRequest();
+        if(bucketName != null && !bucketName.isEmpty()){
+            Bucket bucket = this.bucketRepository.getBucketByName(bucketName);
+            if(bucket == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            explorerRequest.setBucket(bucket);
         }
-        return LynxiberianApplication.getDriverManager().getExplorerDriver(driver).getMedia(explorerRequest);
+        return new ResponseEntity<>(LynxiberianApplication.getDriverManager().getExplorerDriver(driver).getMedia(explorerRequest), HttpStatus.OK);
     }
 }

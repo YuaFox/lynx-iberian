@@ -25,10 +25,10 @@ public abstract class GathererDriver extends Driver {
 
         for(Media media : gatherResult.getMediaList()) {
             if(request == null || request.getFilter() == null || request.getFilter().isOk(media)){
+
                 if (request != null && request.getBucket() != null) {
                     media.setBucket(request.getBucket());
                 }
-                System.out.println(request.getBucket().getId());
                 mediaRepository.save(media);
                 gatherResult.setMediaStatus(GatherMediaStatus.OK);
             }else{

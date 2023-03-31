@@ -46,10 +46,10 @@ public class TumblrPublisher extends PublishDriver {
                         tumblrPost.setTags((List<String>) tags);
                     }
                 }
-                if(post.getMetadata().containsKey("source")) {
-                    Object source = post.getMetadata().get("source");
-                    if (source instanceof String) {
-                        tumblrPost.setSource((String) source);
+                if(post.getMetadata().containsKey("url")) {
+                    Object url = post.getMetadata().get("url");
+                    if (url instanceof String) {
+                        tumblrPost.setLinkUrl((String) url);
                     }
                 }
             }
