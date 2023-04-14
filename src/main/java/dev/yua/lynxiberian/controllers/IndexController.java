@@ -1,14 +1,15 @@
 package dev.yua.lynxiberian.controllers;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 
-@RestController
+@Controller
 public class IndexController {
     @GetMapping(value = {"","/"})
     public Object index(){
-        return new HashMap<String, Integer>();
+        return "index.html";
     }
 }

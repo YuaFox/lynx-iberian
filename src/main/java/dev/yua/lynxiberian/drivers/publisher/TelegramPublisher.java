@@ -3,7 +3,7 @@ package dev.yua.lynxiberian.drivers.publisher;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendPhoto;
 import dev.yua.lynxiberian.drivers.PublishDriver;
-import dev.yua.lynxiberian.models.entity.Post;
+import dev.yua.lynxiberian.models.Post;
 import org.springframework.stereotype.Component;
 
 import java.io.File;

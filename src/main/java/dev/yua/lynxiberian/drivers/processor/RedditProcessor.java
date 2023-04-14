@@ -3,15 +3,14 @@ package dev.yua.lynxiberian.drivers.processor;
 import dev.yua.lynxiberian.LynxiberianApplication;
 import dev.yua.lynxiberian.drivers.GatherMediaStatus;
 import dev.yua.lynxiberian.drivers.ProcessorDriver;
-import dev.yua.lynxiberian.drivers.ProcessorResult;
-import dev.yua.lynxiberian.models.entity.Media;
-import dev.yua.lynxiberian.models.entity.RedditMedia;
+import dev.yua.lynxiberian.models.ProcessorResult;
+import dev.yua.lynxiberian.models.Media;
+import dev.yua.lynxiberian.models.RedditMedia;
 import dev.yua.lynxiberian.repositories.RedditMediaRepository;
 import dev.yua.lynxiberian.utils.Ffmpeg;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import java.io.File;

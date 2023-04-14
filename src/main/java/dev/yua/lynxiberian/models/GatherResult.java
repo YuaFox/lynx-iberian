@@ -1,4 +1,4 @@
-package dev.yua.lynxiberian.drivers;
+package dev.yua.lynxiberian.models;
 
 public class GatherResult {
 
@@ -7,11 +7,6 @@ public class GatherResult {
     private int mediaTotal = 0;
     private int mediaAdded = 0;
     private int mediaFiltered = 0;
-
-
-    public GatherResult(){
-
-    }
 
     public void addMediaAdded(){
         this.mediaAdded++;

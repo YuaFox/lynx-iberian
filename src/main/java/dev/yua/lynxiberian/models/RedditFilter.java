@@ -1,4 +1,4 @@
-package dev.yua.lynxiberian.models.entity;
+package dev.yua.lynxiberian.models;
 
 import jakarta.persistence.*;
 
@@ -6,7 +6,6 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
-@Table(name="reddit_gather_timers")
 public class RedditFilter implements Filter, Serializable {
 
     @Serial

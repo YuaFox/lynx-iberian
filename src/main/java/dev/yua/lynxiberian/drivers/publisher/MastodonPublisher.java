@@ -1,7 +1,7 @@
 package dev.yua.lynxiberian.drivers.publisher;
 
 import dev.yua.lynxiberian.drivers.PublishDriver;
-import dev.yua.lynxiberian.models.entity.Post;
+import dev.yua.lynxiberian.models.Post;
 import okhttp3.*;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;

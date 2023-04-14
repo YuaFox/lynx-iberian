@@ -1,5 +1,8 @@
 package dev.yua.lynxiberian;
 
+import dev.yua.lynxiberian.models.Bucket;
+import dev.yua.lynxiberian.repositories.BucketRepository;
+import dev.yua.lynxiberian.repositories.MediaRepository;
 import dev.yua.lynxiberian.utils.http.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -18,8 +21,10 @@ public class LynxiberianApplication {
 	@Autowired
 	private DriverManager driverManager;
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(LynxiberianApplication.class, args);
+
 	}
 
 	public static DriverManager getDriverManager(){

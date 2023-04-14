@@ -1,17 +1,18 @@
 package dev.yua.lynxiberian.drivers.explorer;
 
 import dev.yua.lynxiberian.drivers.ExplorerDriver;
+import dev.yua.lynxiberian.models.ExplorerRequest;
+import dev.yua.lynxiberian.repositories.MediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import dev.yua.lynxiberian.models.dao.MediaDao;
-import dev.yua.lynxiberian.models.entity.Media;
+import dev.yua.lynxiberian.models.Media;
 
 @Component
 public class RandomExplorerDriver extends ExplorerDriver {
 
     @Autowired
-    private MediaDao mediaDao;
+    private MediaRepository mediaRepository;
 
     @Override
     public String getName() { return "random"; }
@@ -21,7 +22,11 @@ public class RandomExplorerDriver extends ExplorerDriver {
     }
 
     @Override
-    public Media getMedia() {
-        return mediaDao.getRandom();
+    public Media getMedia(ExplorerRequest explorerRequest) {
+        if(explorerRequest.getBucket() == null){
+            return mediaRepository.getRandomMedia();
+        }else{
+            return mediaRepository.getRandomMedia(explorerRequest.getBucket());
+        }
     }
 }

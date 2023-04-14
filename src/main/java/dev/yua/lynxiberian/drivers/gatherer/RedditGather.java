@@ -1,10 +1,11 @@
 package dev.yua.lynxiberian.drivers.gatherer;
 
 import dev.yua.lynxiberian.drivers.GatherMediaStatus;
-import dev.yua.lynxiberian.drivers.GatherResult;
+import dev.yua.lynxiberian.models.GatherRequest;
+import dev.yua.lynxiberian.models.GatherResult;
 import dev.yua.lynxiberian.drivers.GathererDriver;
-import dev.yua.lynxiberian.models.entity.Filter;
-import dev.yua.lynxiberian.models.entity.RedditFilter;
+import dev.yua.lynxiberian.models.Filter;
+import dev.yua.lynxiberian.models.RedditFilter;
 import dev.yua.lynxiberian.utils.reddit.RedditApi;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,45 +26,36 @@ public class RedditGather extends GathererDriver {
     }
 
     @Override
-    public void gather(List<Filter> filters, GatherResult results) {
-        List<Filter> redditFilters = filters.stream().filter(f -> f instanceof RedditFilter).toList();
-        if(redditFilters.size() == 0) return;
+    public GatherResult gather(GatherRequest gatherRequest) {
+        GatherResult gatherResult = new GatherResult();
 
-        System.out.println("Starting reddit gather...");
-        System.out.println(redditFilters.size() + "filters found.");
-        for(Filter filter : redditFilters){
-            RedditFilter redditFilter = (RedditFilter) filter;
+        if(!(gatherRequest.getFilter() instanceof RedditFilter redditFilter)) return gatherResult;
 
-            System.out.println("Starting filter for r/"+redditFilter.getSubreddit());
+        String after = null;
+        int postAmount = -1;
+        int postDuplicated = 0;
+        while(postAmount != 0 && postDuplicated < 3){
+            JSONObject listing = RedditApi.getPosts(redditFilter.getSubreddit(), after);
+            after = listing.isNull("after") ? null : listing.getString("after");
+            JSONArray posts = listing.getJSONArray("children");
+            postAmount = posts.length();
 
-            String after = null;
-            int postAmount = -1;
-            int postDuplicated = 0;
-            while(postAmount != 0 && postDuplicated < 3){
-                System.out.println("Starting lot");
-                JSONObject listing = RedditApi.getPosts(redditFilter.getSubreddit(), after);
-                after = listing.isNull("after") ? null : listing.getString("after");
-                JSONArray posts = listing.getJSONArray("children");
-                postAmount = posts.length();
+            gatherResult.setMediaTotal(gatherResult.getMediaTotal() + postAmount);
 
-                System.out.println("Got "+postAmount+" posts.");
-                results.setMediaTotal(results.getMediaTotal() + postAmount);
+            if(postAmount == 0) continue;
 
-                if(postAmount == 0) continue;
-
-                for(int i = 0; i < posts.length() && postDuplicated < 3; i++) {
-                    JSONObject post = posts.getJSONObject(i).getJSONObject("data");
-                    GatherMediaStatus mediaStatus = this.save("reddit", post, List.of(redditFilter), results);
-                    if(mediaStatus == GatherMediaStatus.DUPLICATED) postDuplicated++;
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+            for(int i = 0; i < posts.length() && postDuplicated < 3; i++) {
+                JSONObject post = posts.getJSONObject(i).getJSONObject("data");
+                GatherMediaStatus mediaStatus = this.save("reddit", post, gatherRequest);
+                if(mediaStatus == GatherMediaStatus.DUPLICATED) postDuplicated++;
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
-        System.out.println("Done reddit gather.");
 
+        return gatherResult;
     }
 }

@@ -2,9 +2,8 @@ package dev.yua.lynxiberian.drivers.processor;
 
 import dev.yua.lynxiberian.drivers.GatherMediaStatus;
 import dev.yua.lynxiberian.drivers.ProcessorDriver;
-import dev.yua.lynxiberian.drivers.ProcessorResult;
-import dev.yua.lynxiberian.models.entity.Filter;
-import dev.yua.lynxiberian.models.entity.Media;
+import dev.yua.lynxiberian.models.ProcessorResult;
+import dev.yua.lynxiberian.models.Media;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 
 @Component
 public class LocalProcessorDriver extends ProcessorDriver {
@@ -46,7 +44,6 @@ public class LocalProcessorDriver extends ProcessorDriver {
         }
         Media media = new Media();
         media.setPath(destination.toString());
-        media.setMeta("local");
         return processorResult.setMediaStatus(GatherMediaStatus.OK).addMedia(media);
     }
 }
