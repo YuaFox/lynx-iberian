@@ -5,8 +5,8 @@
     "types": ["vite/client"],
     "declaration": true,
     "emitDeclarationOnly": true,
-    "outDir": "./html/types",
-    "rootDir": "./html/ts",
+    "outDir": "./frontend/types",
+    "rootDir": "./frontend/src",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -17,6 +17,6 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["html/ts/**/*.ts"],
+  "include": ["frontend/src/**/*.ts"],
   "exclude": []
 }

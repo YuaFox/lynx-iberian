@@ -589,18 +589,22 @@ function e(e2) {
  */
 var n;
 null != (null === (n = window.HTMLSlotElement) || void 0 === n ? void 0 : n.prototype.assignedElements) ? (o2, n2) => o2.assignedElements(n2) : (o2, n2) => o2.assignedNodes(n2).filter((o3) => o3.nodeType === Node.ELEMENT_NODE);
-var __defProp$2 = Object.defineProperty;
-var __getOwnPropDesc$2 = Object.getOwnPropertyDescriptor;
-var __decorateClass$2 = (decorators, target, key, kind) => {
-  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc$2(target, key) : target;
+var __defProp$6 = Object.defineProperty;
+var __getOwnPropDesc$6 = Object.getOwnPropertyDescriptor;
+var __decorateClass$6 = (decorators, target, key, kind) => {
+  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc$6(target, key) : target;
   for (var i2 = decorators.length - 1, decorator; i2 >= 0; i2--)
     if (decorator = decorators[i2])
       result = (kind ? decorator(target, key, result) : decorator(result)) || result;
   if (kind && result)
-    __defProp$2(target, key, result);
+    __defProp$6(target, key, result);
   return result;
 };
 let LynxNav = class extends s {
+  constructor() {
+    super(...arguments);
+    this.elements = [];
+  }
   createRenderRoot() {
     return this;
   }
@@ -613,43 +617,48 @@ let LynxNav = class extends s {
           </button>
           <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav me-auto">
-              <li class="nav-item">
-                <a class="nav-link active" href="#">Home
-                  <span class="visually-hidden">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Separated link</a>
-                </div>
-              </li>
             </ul>
-            <form class="d-flex">
-              <input class="form-control me-sm-2" type="search" placeholder="Search">
-              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-            </form>
           </div>
         </div>
       </nav>`;
   }
 };
-LynxNav = __decorateClass$2([
+LynxNav = __decorateClass$6([
   e$1("lynx-nav")
 ], LynxNav);
+var __defProp$5 = Object.defineProperty;
+var __getOwnPropDesc$5 = Object.getOwnPropertyDescriptor;
+var __decorateClass$5 = (decorators, target, key, kind) => {
+  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc$5(target, key) : target;
+  for (var i2 = decorators.length - 1, decorator; i2 >= 0; i2--)
+    if (decorator = decorators[i2])
+      result = (kind ? decorator(target, key, result) : decorator(result)) || result;
+  if (kind && result)
+    __defProp$5(target, key, result);
+  return result;
+};
+let LynxSidenav = class extends s {
+  createRenderRoot() {
+    return this;
+  }
+  _setView(v2) {
+    document.querySelector("lynx-container-main").view = v2;
+  }
+  render() {
+    return x`
+            ${LynxSidenav.elements.map((view) => {
+      var _a;
+      return x`
+                <a href="#" class="d-flex h4 p-2 text-light text-decoration-none" ${((_a = document.querySelector("lynx-container-main").view) == null ? void 0 : _a.name) == view.name ? `background-color: #111; border-radius: 5px;` : ``} @click=${() => this._setView(view)}>${view.name}</a>
+            `;
+    })}
+        `;
+  }
+};
+LynxSidenav.elements = [];
+LynxSidenav = __decorateClass$5([
+  e$1("lynx-sidenav")
+], LynxSidenav);
 function bind(fn, thisArg) {
   return function wrap() {
     return fn.apply(thisArg, arguments);
@@ -2564,15 +2573,15 @@ axios.formToJSON = (thing) => formDataToJSON(utils.isHTMLForm(thing) ? new FormD
 axios.HttpStatusCode = HttpStatusCode$1;
 axios.default = axios;
 var axios$1 = axios;
-var __defProp$1 = Object.defineProperty;
-var __getOwnPropDesc$1 = Object.getOwnPropertyDescriptor;
-var __decorateClass$1 = (decorators, target, key, kind) => {
-  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc$1(target, key) : target;
+var __defProp$4 = Object.defineProperty;
+var __getOwnPropDesc$4 = Object.getOwnPropertyDescriptor;
+var __decorateClass$4 = (decorators, target, key, kind) => {
+  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc$4(target, key) : target;
   for (var i2 = decorators.length - 1, decorator; i2 >= 0; i2--)
     if (decorator = decorators[i2])
       result = (kind ? decorator(target, key, result) : decorator(result)) || result;
   if (kind && result)
-    __defProp$1(target, key, result);
+    __defProp$4(target, key, result);
   return result;
 };
 let LynxBucket = class extends s {
@@ -2605,26 +2614,33 @@ let LynxBucket = class extends s {
   }
 };
 LynxBucket.styles = i$2`p { color: blue }`;
-__decorateClass$1([
+__decorateClass$4([
   e()
 ], LynxBucket.prototype, "name", 2);
-LynxBucket = __decorateClass$1([
+LynxBucket = __decorateClass$4([
   e$1("lynx-bucket")
 ], LynxBucket);
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __decorateClass = (decorators, target, key, kind) => {
-  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc(target, key) : target;
+class LynxView extends s {
+  constructor(name2) {
+    super();
+    this.name = "";
+    this.name = name2;
+  }
+}
+var __defProp$3 = Object.defineProperty;
+var __getOwnPropDesc$3 = Object.getOwnPropertyDescriptor;
+var __decorateClass$3 = (decorators, target, key, kind) => {
+  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc$3(target, key) : target;
   for (var i2 = decorators.length - 1, decorator; i2 >= 0; i2--)
     if (decorator = decorators[i2])
       result = (kind ? decorator(target, key, result) : decorator(result)) || result;
   if (kind && result)
-    __defProp(target, key, result);
+    __defProp$3(target, key, result);
   return result;
 };
-let LynxBuckets = class extends s {
+let LynxViewBuckets = class extends LynxView {
   constructor() {
-    super(...arguments);
+    super("Buckets");
     this.form_new_bucket_name = "";
     this.buckets = [];
     this.bucket_items = [];
@@ -2634,7 +2650,7 @@ let LynxBuckets = class extends s {
   }
   render() {
     return x`
-            <h2>Buckets</h2>
+            <h2 class="my-4">Buckets</h2>
             <div class="card text-white bg-primary border-primary mb-3">
                 <div class="card-body">
                     <div class="card-title d-flex">
@@ -2676,7 +2692,7 @@ let LynxBuckets = class extends s {
   }
   _query() {
     const self2 = this;
-    axios$1.get("http://localhost:8080/api/v1/bucket", {
+    axios$1.get("/api/v1/bucket", {
       auth: {
         username: "lynx",
         password: "lynx"
@@ -2695,13 +2711,130 @@ let LynxBuckets = class extends s {
     this._query();
   }
 };
-__decorateClass([
+__decorateClass$3([
   e()
-], LynxBuckets.prototype, "form_new_bucket_name", 2);
-__decorateClass([
+], LynxViewBuckets.prototype, "form_new_bucket_name", 2);
+__decorateClass$3([
   e()
-], LynxBuckets.prototype, "buckets", 2);
-LynxBuckets = __decorateClass([
+], LynxViewBuckets.prototype, "buckets", 2);
+LynxViewBuckets = __decorateClass$3([
   e$1("lynx-buckets")
-], LynxBuckets);
-export { LynxBuckets, LynxNav };
+], LynxViewBuckets);
+var __defProp$2 = Object.defineProperty;
+var __getOwnPropDesc$2 = Object.getOwnPropertyDescriptor;
+var __decorateClass$2 = (decorators, target, key, kind) => {
+  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc$2(target, key) : target;
+  for (var i2 = decorators.length - 1, decorator; i2 >= 0; i2--)
+    if (decorator = decorators[i2])
+      result = (kind ? decorator(target, key, result) : decorator(result)) || result;
+  if (kind && result)
+    __defProp$2(target, key, result);
+  return result;
+};
+let LynxContainerMain = class extends s {
+  constructor() {
+    super(...arguments);
+    this.view = void 0;
+  }
+  createRenderRoot() {
+    return this;
+  }
+  render() {
+    return x`${this.view}`;
+  }
+};
+__decorateClass$2([
+  e()
+], LynxContainerMain.prototype, "view", 2);
+LynxContainerMain = __decorateClass$2([
+  e$1("lynx-container-main")
+], LynxContainerMain);
+var __defProp$1 = Object.defineProperty;
+var __getOwnPropDesc$1 = Object.getOwnPropertyDescriptor;
+var __decorateClass$1 = (decorators, target, key, kind) => {
+  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc$1(target, key) : target;
+  for (var i2 = decorators.length - 1, decorator; i2 >= 0; i2--)
+    if (decorator = decorators[i2])
+      result = (kind ? decorator(target, key, result) : decorator(result)) || result;
+  if (kind && result)
+    __defProp$1(target, key, result);
+  return result;
+};
+let LynxPublisher = class extends s {
+  constructor() {
+    super(...arguments);
+    this.name = "demo";
+    this.ready = false;
+  }
+  createRenderRoot() {
+    return this;
+  }
+  render() {
+    return x`
+            <div class="card ${this.ready ? `border-success` : `border-danger`} mb-3">
+                <div class="card-body">
+                    <div class="card-title d-flex">
+                        <h4 class="me-auto mb-0 ${this.ready ? `text-success` : `text-danger`}">${this.name}</h4>
+                    </div>
+                    <p class="card-text">${this.ready ? `Ready` : `Not ready (Needs extra setup!)`}</p>
+                </div>
+            </div>
+        `;
+  }
+};
+__decorateClass$1([
+  e()
+], LynxPublisher.prototype, "name", 2);
+LynxPublisher = __decorateClass$1([
+  e$1("lynx-publisher")
+], LynxPublisher);
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __decorateClass = (decorators, target, key, kind) => {
+  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc(target, key) : target;
+  for (var i2 = decorators.length - 1, decorator; i2 >= 0; i2--)
+    if (decorator = decorators[i2])
+      result = (kind ? decorator(target, key, result) : decorator(result)) || result;
+  if (kind && result)
+    __defProp(target, key, result);
+  return result;
+};
+let LynxViewPublishers = class extends LynxView {
+  constructor() {
+    super("Publishers");
+    this.publishers = [];
+  }
+  createRenderRoot() {
+    return this;
+  }
+  render() {
+    return x`
+            <h2 class="my-4">Publishers</h2>
+            <div>
+                ${this.publishers.map((publisher) => publisher)}
+            </div>
+        `;
+  }
+  firstUpdated() {
+    const self2 = this;
+    axios$1.get("/api/v1/drivers/publisher").then((response) => {
+      self2.publishers = [];
+      response.data.map((publisher) => {
+        let e2 = new LynxPublisher();
+        e2.name = publisher.name;
+        e2.ready = publisher.ready;
+        self2.publishers.push(e2);
+      });
+      self2.publishers.sort((a2, b) => a2.ready ? -1 : b.ready ? 1 : 0);
+    });
+  }
+};
+__decorateClass([
+  e()
+], LynxViewPublishers.prototype, "publishers", 2);
+LynxViewPublishers = __decorateClass([
+  e$1("lynx-view-publishers")
+], LynxViewPublishers);
+LynxSidenav.elements.push(new LynxViewBuckets());
+LynxSidenav.elements.push(new LynxViewPublishers());
+export { LynxContainerMain, LynxNav, LynxSidenav, LynxViewBuckets };

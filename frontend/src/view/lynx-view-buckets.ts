@@ -1,11 +1,12 @@
-import {html, LitElement} from 'lit';
+import {html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import axios from 'axios';
 
-import { LynxBucket } from './lynx-bucket';
+import { LynxBucket } from '../ts/lynx-bucket';
+import { LynxView } from './lynx-view'
 
 @customElement('lynx-buckets')
-export class LynxBuckets extends LitElement {
+export class LynxViewBuckets extends LynxView {
 
     @property()
     form_new_bucket_name = ""
@@ -15,13 +16,17 @@ export class LynxBuckets extends LitElement {
 
     bucket_items : LynxBucket[] = []
 
+    constructor() {
+        super("Buckets")
+    }
+
     createRenderRoot() {
         return this;
     }
 
     render() {
         return html`
-            <h2>Buckets</h2>
+            <h2 class="my-4">Buckets</h2>
             <div class="card text-white bg-primary border-primary mb-3">
                 <div class="card-body">
                     <div class="card-title d-flex">
@@ -66,7 +71,7 @@ export class LynxBuckets extends LitElement {
 
     _query() {
         const self = this
-        axios.get("http://localhost:8080/api/v1/bucket", {
+        axios.get("/api/v1/bucket", {
             auth: {
                 username: "lynx",
                 password: "lynx"

@@ -9,6 +9,7 @@
 bin
 build
 node_modules
+frontend/types
 
 # node red
 /node-red-data

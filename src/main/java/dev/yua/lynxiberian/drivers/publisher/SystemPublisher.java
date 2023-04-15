@@ -11,7 +11,7 @@ public class SystemPublisher extends PublishDriver {
 
     @Override
     public void onLoad() {
-
+        this.setReady(true);
     }
 
     @Override

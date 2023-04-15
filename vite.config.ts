@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     outDir: 'src/main/resources/static/app',
     lib: {
-      entry: 'html/main.ts',
+      entry: 'frontend/src/main.ts',
       formats: ['es'],
     },
     manifest: true,
