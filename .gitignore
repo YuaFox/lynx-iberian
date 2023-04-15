@@ -8,6 +8,7 @@
 # build
 bin
 build
+node_modules
 
 # node red
 /node-red-data

@@ -1,0 +1,7 @@
+{
+  "html/main.ts": {
+    "file": "lynx-iberian-web.es.js",
+    "src": "html/main.ts",
+    "isEntry": true
+  }
+}
