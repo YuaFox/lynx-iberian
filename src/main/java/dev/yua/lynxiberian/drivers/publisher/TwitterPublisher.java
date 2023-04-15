@@ -6,41 +6,38 @@ import java.io.*;
 import java.util.List;
 
 import dev.yua.lynxiberian.models.Post;
-import dev.yua.lynxiberian.models.TwitterAccount;
-import dev.yua.lynxiberian.repositories.TwitterAccountRepository;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import io.github.redouane59.twitter.dto.tweet.TweetParameters;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class TwitterPublisher extends PublishDriver {
 
-    @Autowired
-    private TwitterAccountRepository twitterAccountRepository;
+    private TwitterClient twitterClient;
 
     @Override public String getName() { return "twitter"; }
     @Override
     public void onLoad() {
+        String apiKey = System.getenv("TWITTER_API_KEY");
+        String apiSecret = System.getenv("TWITTER_API_SECRET");
+        String clientId = System.getenv("TWITTER_CLIENT_ID");
+        String clientSecret = System.getenv("TWITTER_CLIENT_SECRET");
+        if(apiKey != null && apiSecret != null && clientId != null && clientSecret != null){
+            twitterClient = new TwitterClient(TwitterCredentials.builder()
+                    .accessToken(clientId)
+                    .accessTokenSecret(clientSecret)
+                    .apiKey(apiKey)
+                    .apiSecretKey(apiSecret)
+                    .build());
+            this.setReady(true);
+        }
     }
 
     @Override
     public void publish(Post post) {
-        String consumerKey = System.getenv("TWITTER_KEY");
-        String secretKey = System.getenv("TWITTER_SECRET");
-
-        TwitterAccount account = twitterAccountRepository.findById(1L).get();
-
-        TwitterClient twitterClient = new TwitterClient(TwitterCredentials.builder()
-                .accessToken(account.getToken())
-                .accessTokenSecret(account.getSecret())
-                .apiKey(consumerKey)
-                .apiSecretKey(secretKey)
-                .build());
-
         String mediaId = null;
 
         if(post.getPath() != null)
