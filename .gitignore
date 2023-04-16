@@ -10,7 +10,7 @@ bin
 build
 node_modules
 frontend/types
-
+mysql-data
 # node red
 /node-red-data
 

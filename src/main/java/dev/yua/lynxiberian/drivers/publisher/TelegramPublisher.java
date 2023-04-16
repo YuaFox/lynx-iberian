@@ -21,8 +21,15 @@ public class TelegramPublisher extends PublishDriver {
 
     @Override
     public void onLoad() {
-        this.bot = new TelegramBot(System.getenv("TELEGRAM_TOKEN"));
-        this.chatId = Long.parseLong(System.getenv("TELEGRAM_CHAT"));
+        if(System.getenv("TELEGRAM_TOKEN") == null) return;
+
+        try {
+            this.bot = new TelegramBot(System.getenv("TELEGRAM_TOKEN"));
+            this.chatId = Long.parseLong(System.getenv("TELEGRAM_CHAT"));
+            this.setReady(true);
+        }catch (Exception exception){
+            System.err.println("Error setting up telegram!");
+        }
     }
 
 

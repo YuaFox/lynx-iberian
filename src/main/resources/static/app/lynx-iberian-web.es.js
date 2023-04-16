@@ -649,7 +649,7 @@ let LynxSidenav = class extends s {
             ${LynxSidenav.elements.map((view) => {
       var _a;
       return x`
-                <a href="#" class="d-flex h4 p-2 text-light text-decoration-none" ${((_a = document.querySelector("lynx-container-main").view) == null ? void 0 : _a.name) == view.name ? `background-color: #111; border-radius: 5px;` : ``} @click=${() => this._setView(view)}>${view.name}</a>
+                <a href="#" class="d-flex h5 p-2 text-light text-decoration-none" ${((_a = document.querySelector("lynx-container-main").view) == null ? void 0 : _a.name) == view.name ? `background-color: #111; border-radius: 5px;` : ``} @click=${() => this._setView(view)}>${view.name}</a>
             `;
     })}
         `;

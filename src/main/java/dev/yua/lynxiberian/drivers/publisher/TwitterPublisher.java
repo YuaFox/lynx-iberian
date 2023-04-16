@@ -8,6 +8,7 @@ import java.util.List;
 import dev.yua.lynxiberian.models.Post;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
+import io.github.redouane59.twitter.dto.tweet.ReplySettings;
 import io.github.redouane59.twitter.dto.tweet.TweetParameters;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
 import org.springframework.stereotype.Component;
