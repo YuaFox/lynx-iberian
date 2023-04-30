@@ -33,6 +33,7 @@ public class DiscordCommandInput extends CommandInput {
 
     @Override
     public void onLoad() {
+        if(!DiscordBot.getBot().enabled()) return;
         DiscordBot bot = DiscordBot.getBot();
         bot.addEventListener(new DiscordEventListener());
         List<Command> localCommands = LynxiberianApplication.getEventManager().getCommands();

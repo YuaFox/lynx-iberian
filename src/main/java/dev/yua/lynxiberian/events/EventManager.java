@@ -58,6 +58,8 @@ public class EventManager {
     }
 
     private <T> T sendRemoteEvent(Event event, Class<T> c){
+        if(System.getenv("WEBHOOK_EVENT") == null) return null;
+
         try {
             CloseableHttpClient client = HttpClients.createDefault();
             HttpPost httpPost = new HttpPost(System.getenv("WEBHOOK_EVENT"));

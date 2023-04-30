@@ -47,6 +47,7 @@ public class DiscordBot {
     }
 
     public void addEventListener(Object o){
+        if(this.bot == null) return;
         this.bot.addEventListener(o);
     }
 
