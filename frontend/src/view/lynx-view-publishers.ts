@@ -23,8 +23,14 @@ export class LynxViewPublishers extends LynxView {
 
     render() {
         return html`
-            <h2 class="my-4">Publishers</h2>
-            <div>
+            <div class="p-4 m-4" style="background-color: #111; border-radius: 5px;">
+                <p class="text-white h4">Send a post now!</p>
+                <button type="button" class="btn btn-light mt-1" @click=${this._firePostEvent}>
+                    <i class="fa-solid fa-paper-plane me-1"></i>
+                    Publish
+                </button>
+            </div>
+            <div class="p-4">
                 ${this.publishers.map((publisher: LynxPublisher) => publisher)}
             </div>
         `
@@ -43,6 +49,15 @@ export class LynxViewPublishers extends LynxView {
             })
 
             self.publishers.sort((a, b) => a.ready ? -1 : b.ready ? 1 : 0)
+        })
+    }
+
+    _firePostEvent(){
+        axios.post("/api/v1/event", {
+            "@class": "dev.yua.lynxiberian.events.definitions.TimeEvent",
+            "timeName": "post"
+        }).then(() => {
+            alert("Post sent")
         })
     }
 }

@@ -26,24 +26,21 @@ export class LynxViewBuckets extends LynxView {
 
     render() {
         return html`
-            <h2 class="my-4">Buckets</h2>
-            <div class="card text-white bg-primary border-primary mb-3">
-                <div class="card-body">
-                    <div class="card-title d-flex">
-                        <h4 class="me-auto mb-0">Create bucket</h4>
-                    </div>
-                    <p class="card-text">A bucket is where media is stored.</p>
-                    <div class="row">
-                        <div class="col-sm-2">Name</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" @change=${this._input_changed}>
-                        </div>
-                    </div>
+            <div class="p-4 m-4" style="background-color: #111; border-radius: 5px;">
+                <h4 class="me-auto mb-0 text-white">Create bucket</h4>
+                <p class="text-white">A bucket is where media is stored.</p>
 
-                    <button type="button" class="btn btn-light mt-1" @click=${this._createBucket}>Create</button>
+                <div class="row">
+                    <div class="col-sm-2 text-white">Name</div>
+                    <div class="col-sm-10">
+                         <input type="text" class="form-control" @change=${this._input_changed}>
+                    </div>
                 </div>
+
+                <button type="button" class="btn btn-light mt-1" @click=${this._createBucket}>Create</button>
             </div>
-            <div id="bucket-list">
+
+            <div class="p-4">
                 ${this.bucket_items.map((bucket: any) => bucket)}
             </div>
         `;

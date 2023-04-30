@@ -9,11 +9,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script type="module" src="/app/lynx-iberian-web.es.js"></script>
 </head>
-<body class="d-flex flex-column" style="min-height: 100svh;">
-<lynx-nav></lynx-nav>
-<div class="flex-fill row m-0">
-    <lynx-sidenav class="col-md-3 col-lg-2 bg-dark text-light p-3"></lynx-sidenav>
-    <lynx-container-main class="col-md-9 col-lg-10 p-4"></lynx-container-main>
-</div>
+<body class="d-flex flex-row justify-content-center bg-dark" style="min-height: 100svh;">
+    <div style="
+        background-color: #111;
+        height: 100svh;
+        width: calc(50vw - 400px);
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    "></div>
+    <div class="flex-fill row m-0" style="max-width: 950px;">
+        <lynx-sidenav class="col-md-3 text-light p-3 pe-0" style="background-color: #111;"></lynx-sidenav>
+        <lynx-container-main class="col-md-9 p-0"></lynx-container-main>
+    </div>
 </body>
 </html>

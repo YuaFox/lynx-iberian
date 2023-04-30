@@ -609,7 +609,7 @@ let LynxNav = class extends s {
     return this;
   }
   render() {
-    return x`<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    return x`<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #111;">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Lynx-Iberian</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -638,24 +638,39 @@ var __decorateClass$5 = (decorators, target, key, kind) => {
   return result;
 };
 let LynxSidenav = class extends s {
+  constructor() {
+    super(...arguments);
+    this.currentView = null;
+  }
   createRenderRoot() {
     return this;
   }
   _setView(v2) {
+    this.currentView = v2;
     document.querySelector("lynx-container-main").view = v2;
   }
   render() {
     return x`
+            <h4 class="text-white px-2">Lynx-Iberian</h4>
+            <p class="px-2 mb-3">2023.04</p>
             ${LynxSidenav.elements.map((view) => {
       var _a;
       return x`
-                <a href="#" class="d-flex h5 p-2 text-light text-decoration-none" ${((_a = document.querySelector("lynx-container-main").view) == null ? void 0 : _a.name) == view.name ? `background-color: #111; border-radius: 5px;` : ``} @click=${() => this._setView(view)}>${view.name}</a>
+                <a href="#" class="d-flex h5 p-3 m-0 text-light text-decoration-none" style="${((_a = this.currentView) == null ? void 0 : _a.name) == view.name ? `background-color: rgba(var(--bs-dark-rgb),1)!important; border-radius: 5px 0 0 5px;` : ``}" @click=${() => this._setView(view)}>${view.name}</a>
             `;
     })}
         `;
   }
 };
+LynxSidenav.styles = i$2`
+        :root {
+            background: #222 !important;
+        }
+    `;
 LynxSidenav.elements = [];
+__decorateClass$5([
+  e()
+], LynxSidenav.prototype, "currentView", 2);
 LynxSidenav = __decorateClass$5([
   e$1("lynx-sidenav")
 ], LynxSidenav);
@@ -2594,13 +2609,15 @@ let LynxBucket = class extends s {
   }
   render() {
     return x`
-            <div class="card border-primary mb-3">
-                <div class="card-body">
-                    <div class="card-title d-flex">
-                        <h4 class="me-auto mb-0">${this.name}</h4>
-                        <button type="button" class="btn-close" @click="${this._delete}"></button>
-                    </div>
-                    <p class="card-text">Local bucket</p>
+            <div class="flex-fill row m-0">
+                <h4 class="col-md-4 text-white me-auto">
+                    ${this.name}
+                </h4>
+                <p class="col-md-7 text-white">Local bucket</p>
+                <div class="col-md-1">
+                    <button type="button" class="text-white h4" style="background: none;border: none;" @click="${this._delete}">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
             </div>
         `;
@@ -2650,24 +2667,21 @@ let LynxViewBuckets = class extends LynxView {
   }
   render() {
     return x`
-            <h2 class="my-4">Buckets</h2>
-            <div class="card text-white bg-primary border-primary mb-3">
-                <div class="card-body">
-                    <div class="card-title d-flex">
-                        <h4 class="me-auto mb-0">Create bucket</h4>
-                    </div>
-                    <p class="card-text">A bucket is where media is stored.</p>
-                    <div class="row">
-                        <div class="col-sm-2">Name</div>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" @change=${this._input_changed}>
-                        </div>
-                    </div>
+            <div class="p-4 m-4" style="background-color: #111; border-radius: 5px;">
+                <h4 class="me-auto mb-0 text-white">Create bucket</h4>
+                <p class="text-white">A bucket is where media is stored.</p>
 
-                    <button type="button" class="btn btn-light mt-1" @click=${this._createBucket}>Create</button>
+                <div class="row">
+                    <div class="col-sm-2 text-white">Name</div>
+                    <div class="col-sm-10">
+                         <input type="text" class="form-control" @change=${this._input_changed}>
+                    </div>
                 </div>
+
+                <button type="button" class="btn btn-light mt-1" @click=${this._createBucket}>Create</button>
             </div>
-            <div id="bucket-list">
+
+            <div class="p-4">
                 ${this.bucket_items.map((bucket) => bucket)}
             </div>
         `;
@@ -2771,13 +2785,14 @@ let LynxPublisher = class extends s {
   }
   render() {
     return x`
-            <div class="card ${this.ready ? `border-success` : `border-danger`} mb-3">
-                <div class="card-body">
-                    <div class="card-title d-flex">
-                        <h4 class="me-auto mb-0 ${this.ready ? `text-success` : `text-danger`}">${this.name}</h4>
-                    </div>
-                    <p class="card-text">${this.ready ? `Ready` : `Not ready (Needs extra setup!)`}</p>
-                </div>
+            <div class="flex-fill row m-0">
+                <h4 class="col-md-1 ${this.ready ? `text-success` : `text-danger`}">
+                    ${this.ready ? x`<i class="fa-solid fa-check"></i>` : x`<i class="fa-solid fa-xmark pe-1"></i>`}
+                </h4>
+                <h4 class="col-md-4 ${this.ready ? `text-success` : `text-danger`}">
+                    ${this.name}
+                </h4>
+                <p class="col-md-7 text-white">${this.ready ? `Ready` : `Not ready (Needs extra setup!)`}</p>
             </div>
         `;
   }
@@ -2809,8 +2824,14 @@ let LynxViewPublishers = class extends LynxView {
   }
   render() {
     return x`
-            <h2 class="my-4">Publishers</h2>
-            <div>
+            <div class="p-4 m-4" style="background-color: #111; border-radius: 5px;">
+                <p class="text-white h4">Send a post now!</p>
+                <button type="button" class="btn btn-light mt-1" @click=${this._firePostEvent}>
+                    <i class="fa-solid fa-paper-plane me-1"></i>
+                    Publish
+                </button>
+            </div>
+            <div class="p-4">
                 ${this.publishers.map((publisher) => publisher)}
             </div>
         `;
@@ -2826,6 +2847,14 @@ let LynxViewPublishers = class extends LynxView {
         self2.publishers.push(e2);
       });
       self2.publishers.sort((a2, b) => a2.ready ? -1 : b.ready ? 1 : 0);
+    });
+  }
+  _firePostEvent() {
+    axios$1.post("/api/v1/event", {
+      "@class": "dev.yua.lynxiberian.events.definitions.TimeEvent",
+      "timeName": "post"
+    }).then(() => {
+      alert("Post sent");
     });
   }
 };

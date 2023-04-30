@@ -17,13 +17,15 @@ export class LynxBucket extends LitElement {
 
     render() {
         return html`
-            <div class="card border-primary mb-3">
-                <div class="card-body">
-                    <div class="card-title d-flex">
-                        <h4 class="me-auto mb-0">${this.name}</h4>
-                        <button type="button" class="btn-close" @click="${this._delete}"></button>
-                    </div>
-                    <p class="card-text">Local bucket</p>
+            <div class="flex-fill row m-0">
+                <h4 class="col-md-4 text-white me-auto">
+                    ${this.name}
+                </h4>
+                <p class="col-md-7 text-white">Local bucket</p>
+                <div class="col-md-1">
+                    <button type="button" class="text-white h4" style="background: none;border: none;" @click="${this._delete}">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
             </div>
         `;
