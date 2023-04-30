@@ -13,7 +13,7 @@
     "scripts": {
         "start": "npm run dev",
         "dev": "vite",
-        "build": "tsc && vite build && ./gradlew bootJar",
+        "build": "tsc && vite build && gradle bootJar",
         "serve": "tsc && vite preview"
     },
     "dependencies": {

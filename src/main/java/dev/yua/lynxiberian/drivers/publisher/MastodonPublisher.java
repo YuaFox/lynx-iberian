@@ -25,6 +25,9 @@ public class MastodonPublisher extends PublishDriver {
     @Override
     public void onLoad() {
         this.client = new OkHttpClient();
+        if(System.getenv("MASTODON_DOMAIN") != null){
+            this.setReady(true);
+        }
         this.domain = System.getenv("MASTODON_DOMAIN");
         this.token = System.getenv("MASTODON_TOKEN");
     }

@@ -1,5 +1,6 @@
 package dev.yua.lynxiberian.drivers.gatherer;
 
+import dev.yua.lynxiberian.models.Bucket;
 import dev.yua.lynxiberian.models.GatherRequest;
 import dev.yua.lynxiberian.models.GatherResult;
 import dev.yua.lynxiberian.drivers.GathererDriver;
@@ -30,6 +31,10 @@ public class LocalGatherDriver extends GathererDriver {
         this.folderStorage = new File("storage/local");
         this.folder.mkdirs();
         this.folderStorage.mkdirs();
+
+        this.bucketRepository.findAll().forEach(
+                (Bucket bucket) -> new File(this.folder, bucket.getName()).mkdir()
+        );
 
         this.gather(null);
     }

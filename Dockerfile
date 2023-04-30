@@ -1,8 +1,9 @@
 FROM gradle:jdk17 AS build
+RUN apt update
+RUN apt install npm -y
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
-RUN gradle bootJar --no-daemon
-
+RUN npm run build
 
 FROM openjdk:17-alpine
 RUN apk update && apk upgrade --no-cache

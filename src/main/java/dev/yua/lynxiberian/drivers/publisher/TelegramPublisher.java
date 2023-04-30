@@ -28,7 +28,7 @@ public class TelegramPublisher extends PublishDriver {
             this.chatId = Long.parseLong(System.getenv("TELEGRAM_CHAT"));
             this.setReady(true);
         }catch (Exception exception){
-            System.err.println("Error setting up telegram!");
+
         }
     }
 

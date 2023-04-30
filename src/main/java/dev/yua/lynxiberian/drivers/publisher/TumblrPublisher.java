@@ -26,6 +26,7 @@ public class TumblrPublisher extends PublishDriver {
         if(System.getenv("TUMBLR_CONSUMER_KEY") != null) {
             this.client = new JumblrClient(System.getenv("TUMBLR_CONSUMER_KEY"), System.getenv("TUMBLR_CONSUMER_SECRET"));
             this.client.setToken(System.getenv("TUMBLR_TOKEN_KEY"), System.getenv("TUMBLR_TOKEN_SECRET"));
+            this.setReady(true);
         }
     }
 
