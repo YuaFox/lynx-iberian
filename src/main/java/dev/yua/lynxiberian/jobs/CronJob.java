@@ -32,6 +32,6 @@ public class CronJob {
 
     @Scheduled(cron = "0 0 * * * *")
     public void everyHour() {
-        LynxiberianApplication.getEventManager().sendEvent(new TimeEvent("posting"), EventResult.class);
+        LynxiberianApplication.getEventManager().sendEvent(new TimeEvent("post"), EventResult.class);
     }
 }
