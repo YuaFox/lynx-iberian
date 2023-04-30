@@ -38,7 +38,7 @@ public class BucketController {
         return ResponseEntity.status(HttpStatus.OK).body("Ok");
     }
 
-    @DeleteMapping(path = "/{bucket}")
+    @DeleteMapping(path = "/{name}")
     public ResponseEntity<String> delete(@PathVariable(name="name") String name){
         Bucket bucket = repository.getBucketByName(name);
         if(bucket != null){

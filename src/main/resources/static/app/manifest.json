@@ -1,0 +1,7 @@
+{
+  "frontend/src/main.ts": {
+    "file": "lynx-iberian-web.es.js",
+    "src": "frontend/src/main.ts",
+    "isEntry": true
+  }
+}

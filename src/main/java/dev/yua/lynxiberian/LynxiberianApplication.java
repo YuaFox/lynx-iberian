@@ -1,8 +1,9 @@
 package dev.yua.lynxiberian;
 
+import dev.yua.lynxiberian.commands.CommandInputManager;
+import dev.yua.lynxiberian.events.EventManager;
 import dev.yua.lynxiberian.models.Bucket;
 import dev.yua.lynxiberian.repositories.BucketRepository;
-import dev.yua.lynxiberian.repositories.MediaRepository;
 import dev.yua.lynxiberian.utils.http.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -20,20 +21,38 @@ public class LynxiberianApplication {
 
 	@Autowired
 	private DriverManager driverManager;
+	@Autowired
+	private EventManager eventManager;
+	@Autowired
+	private CommandInputManager commandInputManager;
+
+	@Autowired
+	private BucketRepository bucketRepository;
 
 
 	public static void main(String[] args) {
 		SpringApplication.run(LynxiberianApplication.class, args);
-
 	}
 
 	public static DriverManager getDriverManager(){
 		return instance.driverManager;
 	}
+	public static EventManager getEventManager(){
+		return instance.eventManager;
+	}
+	public static CommandInputManager getCommandInputManager() { return instance.commandInputManager; }
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void onLoad() {
 		instance = this;
+
+		Bucket defaultBucket = bucketRepository.getBucketByName("default");
+		if(defaultBucket == null){
+			this.bucketRepository.save(new Bucket("default"));
+		}
+
 		driverManager.triggerInit();
+		commandInputManager.onLoad();
+		System.out.println("Lynx-Iberian is up and running!");
 	}
 }
