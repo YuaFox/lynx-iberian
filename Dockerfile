@@ -3,6 +3,7 @@ RUN apt update
 RUN apt install npm -y
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
+RUN npm i
 RUN npm run build
 
 FROM openjdk:17-alpine
