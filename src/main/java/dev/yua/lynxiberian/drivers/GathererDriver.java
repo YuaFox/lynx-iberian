@@ -19,9 +19,9 @@ public abstract class GathererDriver extends Driver {
     public GatherMediaStatus save(String driverName, JSONObject object, GatherRequest request){
         ProcessorResult gatherResult = LynxiberianApplication.getDriverManager().getProcessorDriver(driverName).process(object);
 
-        if(gatherResult.isEmpty()) return GatherMediaStatus.EMPTY;
         if(gatherResult.getMediaStatus() == GatherMediaStatus.DUPLICATED) return GatherMediaStatus.DUPLICATED;
         if(gatherResult.getMediaStatus() == GatherMediaStatus.ERROR) return GatherMediaStatus.ERROR;
+        if(gatherResult.isEmpty()) return GatherMediaStatus.EMPTY;
 
         for(Media media : gatherResult.getMediaList()) {
             if(request == null || request.getFilter() == null || request.getFilter().isOk(media)){

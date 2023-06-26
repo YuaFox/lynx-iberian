@@ -8,7 +8,7 @@ RUN npm run build
 
 FROM openjdk:17-alpine
 RUN apk update && apk upgrade --no-cache
-RUN apk add ffmpeg
+RUN apk add ffmpeg fontconfig
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/lynxiberian.jar
 COPY scripts/app.sh /app/app.sh

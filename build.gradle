@@ -30,12 +30,13 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
 	implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
 
-	implementation('io.github.redouane59.twitter:twittered:2.22')
+	implementation 'io.github.redouane59.twitter:twittered:2.22'
 	implementation 'com.github.pengrad:java-telegram-bot-api:6.3.0'
 	implementation 'com.squareup.okhttp3:okhttp:4.9.1'
 	implementation 'commons-io:commons-io:2.11.0'
 	implementation 'com.tumblr:jumblr:0.0.13'
 	implementation 'net.dv8tion:JDA:5.0.0-beta.5'
+	implementation 'com.flickr4java:flickr4java:3.0.8'
 
 
 
