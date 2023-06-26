@@ -29,7 +29,7 @@ public class MainCommandListener extends CommandListener {
         Post post = new Post();
         try {
             ExplorerRequest explorerRequest = new ExplorerRequest();
-            explorerRequest.setBucket(bucketRepository.getBucketByName("default"));
+            explorerRequest.setBucket(bucketRepository.getBucketByName(Optional.ofNullable(System.getenv("MAIN_COMMAND_BUCKET")).orElse("default")));
 
             post = new Post(LynxiberianApplication.getDriverManager().getExplorerDriver("random").getMedia(explorerRequest));
         }catch (Exception e){
