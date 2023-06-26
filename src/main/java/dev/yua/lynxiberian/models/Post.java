@@ -16,6 +16,7 @@ public class Post extends Media {
     public Post(Media media){
         this.setPath(media.getPath());
         this.setCaption(media.getCaption());
+        this.setSource(media.getSource());
     }
 
     @Transient
@@ -31,15 +32,11 @@ public class Post extends Media {
     }
 
     public void setUrl(String url){
-        if(this.getMetadata() == null)
-            this.setMetadata(new HashMap<>());
-        this.getMetadata().put("url", url);
+        this.setSource(url);
     }
 
     public String getUrl(){
-        if(this.getMetadata() == null || !this.getMetadata().containsKey("url"))
-            return null;
-        return (String) this.getMetadata().get("url");
+        return this.getSource();
     }
 
     public void setDescription(String description){

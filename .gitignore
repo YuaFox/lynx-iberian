@@ -11,6 +11,8 @@ build
 node_modules
 frontend/types
 mysql-data
+lynx-iberian-web.es.js
+
 # node red
 /node-red-data
 
