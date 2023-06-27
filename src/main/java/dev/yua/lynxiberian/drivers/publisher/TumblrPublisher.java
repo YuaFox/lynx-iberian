@@ -47,11 +47,8 @@ public class TumblrPublisher extends PublishDriver {
                         tumblrPost.setTags((List<String>) tags);
                     }
                 }
-                if(post.getMetadata().containsKey("url")) {
-                    Object url = post.getMetadata().get("url");
-                    if (url instanceof String) {
-                        tumblrPost.setLinkUrl((String) url);
-                    }
+                if(post.getSource() != null){
+                    tumblrPost.setLinkUrl(post.getSource());
                 }
             }
             tumblrPost.save();
