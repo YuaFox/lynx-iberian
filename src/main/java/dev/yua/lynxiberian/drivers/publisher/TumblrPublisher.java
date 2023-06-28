@@ -9,12 +9,15 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
 public class TumblrPublisher extends PublishDriver {
 
-    JumblrClient client;
+    private JumblrClient client;
+    private List<String> defaultTags;
 
     @Override
     public String getName() {
@@ -26,6 +29,13 @@ public class TumblrPublisher extends PublishDriver {
         if(System.getenv("TUMBLR_CONSUMER_KEY") != null) {
             this.client = new JumblrClient(System.getenv("TUMBLR_CONSUMER_KEY"), System.getenv("TUMBLR_CONSUMER_SECRET"));
             this.client.setToken(System.getenv("TUMBLR_TOKEN_KEY"), System.getenv("TUMBLR_TOKEN_SECRET"));
+            String defaultTags = System.getenv("TUMBLR_TAGS");
+            if(defaultTags == null){
+                this.defaultTags = new ArrayList<>();
+            }else{
+                this.defaultTags = Arrays.asList(defaultTags.split(" "));
+            }
+
             this.setReady(true);
         }
     }
@@ -40,17 +50,12 @@ public class TumblrPublisher extends PublishDriver {
             }else {
                 tumblrPost.setPhoto(new Photo(new File(post.getPath())));
             }
-            if(post.getMetadata() != null) {
-                if(post.getMetadata().containsKey("tags")) {
-                    Object tags = post.getMetadata().get("tags");
-                    if (tags instanceof List<?>) {
-                        tumblrPost.setTags((List<String>) tags);
-                    }
-                }
-                if(post.getSource() != null){
-                    tumblrPost.setLinkUrl(post.getSource());
-                }
+            if(post.getSource() != null){
+                tumblrPost.setLinkUrl(post.getSource());
             }
+
+            tumblrPost.setTags(this.defaultTags);
+
             tumblrPost.save();
         } catch (IllegalAccessException | InstantiationException | IOException e) {
             throw new RuntimeException(e);
