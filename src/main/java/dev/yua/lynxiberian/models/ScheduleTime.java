@@ -9,8 +9,6 @@ public enum ScheduleTime {
 
     NEVER("never", null),
     //MINUTE_1("minute", CronExpression.parse("0 * * * * *")),
-
-    MINUTE_15("15 minutes", CronExpression.parse("0 */15 * * * *")),
     MINUTE_30("30 minutes", CronExpression.parse("0 */30 * * * *")),
     HOUR_1("hour",      CronExpression.parse("0 0 * * * *")),
     HOUR_2("2 hours",   CronExpression.parse("0 0 */2 * * *")),
