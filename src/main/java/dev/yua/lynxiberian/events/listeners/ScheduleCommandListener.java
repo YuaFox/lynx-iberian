@@ -54,7 +54,7 @@ public class ScheduleCommandListener extends CommandListener {
 
             this.discordServerRepository.save(server);
 
-            if(scheduleTime == ScheduleTime.MINUTE_30){
+            if(scheduleTime == ScheduleTime.MINUTE_15 || scheduleTime == ScheduleTime.MINUTE_30){
                 post.setCaption("❌  This option is patreon only!");
                 post.setDescription("Minimum every 1 hour.\nSupport the bot and the developer with a really low priced subscription <3");
                 post.setUrl("https://www.patreon.com/yuafox");
