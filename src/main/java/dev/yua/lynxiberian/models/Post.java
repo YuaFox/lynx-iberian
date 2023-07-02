@@ -64,7 +64,6 @@ public class Post extends Media {
     }
 
     public String getApiEndpoint(String extra){
-        return "https://www.mammal.org.uk/wp-content/uploads/2019/02/Red-fox-Katie-Nethercoat.jpg";
-        //return System.getenv("APP_URL")+"/api/v1/media/"+this.getMediaId()+extra;
+        return System.getenv("APP_URL")+"/api/v1/media/"+this.getMediaId()+extra;
     }
 }

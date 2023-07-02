@@ -50,7 +50,10 @@ public class InstagramPublisher extends PublishDriver {
             if(hour != 17){
                 return;
             }
-            Response r = this.post(this.createMedia(post.getCaption(), post.getApiEndpoint("")));
+            String caption = post.getCaption();
+            if(caption == null) caption = "";
+            caption = caption+" "+System.getenv("INSTAGRAM_TAGS");
+            Response r = this.post(this.createMedia(caption, post.getApiEndpoint("/file/render/full")));
             String id = new JSONObject(r.body().string()).getString("id");
             this.post(this.publishMedia(id));
         } catch (IOException e) {
