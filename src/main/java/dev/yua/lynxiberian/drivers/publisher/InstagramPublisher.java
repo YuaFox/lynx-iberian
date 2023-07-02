@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Map;
 
 @Component
@@ -43,6 +45,11 @@ public class InstagramPublisher extends PublishDriver {
     @Override
     public void publish(Post post) {
         try {
+            // TODO: remove hardcoded limit
+            int hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            if(hour != 17){
+                return;
+            }
             Response r = this.post(this.createMedia(post.getCaption(), post.getApiEndpoint("")));
             String id = new JSONObject(r.body().string()).getString("id");
             this.post(this.publishMedia(id));
