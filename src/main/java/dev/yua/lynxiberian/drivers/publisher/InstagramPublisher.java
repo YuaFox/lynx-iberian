@@ -53,7 +53,14 @@ public class InstagramPublisher extends PublishDriver {
             String caption = post.getCaption();
             if(caption == null) caption = "";
             caption = caption+" "+System.getenv("INSTAGRAM_TAGS");
-            Response r = this.post(this.createMedia(caption, post.getApiEndpoint("/file/render/full")));
+            String url = post.getApiEndpoint("/file/render/full");
+            Response r = this.post(this.createMedia(caption, url));
+            if(r.code() != 200){
+                System.out.println("Error: "+r.code());
+                System.out.println("url: "+url);
+                System.out.println(r.body().string());
+                return;
+            }
             String id = new JSONObject(r.body().string()).getString("id");
             this.post(this.publishMedia(id));
         } catch (IOException e) {

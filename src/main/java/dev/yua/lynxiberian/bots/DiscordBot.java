@@ -74,21 +74,16 @@ public class DiscordBot {
     }
 
     public void post(DiscordServer server, Post post){
-        System.out.println(server.getGuild());
         if(!server.getScheduleTime().isNow()){
-            System.out.println("Not now next schedule at "+server.getScheduleTime().getValue().next(LocalDateTime.now().minusNanos(1)));
-            System.out.println("Current time "+LocalDateTime.now());
             return;
         }
 
         Guild guild = this.bot.getGuildById(server.getGuild());
         if(guild == null) return;
-        System.out.println(server.getChannel());
         StandardGuildMessageChannel channel = guild.getTextChannelById(server.getChannel());
         if(channel == null) channel = guild.getNewsChannelById(server.getChannel());
         guild.getNewsChannelById(server.getChannel());
         if(channel == null){
-            System.out.println("No channel defined");
             return;
         }
         MessageCreateAction message = channel.sendMessageEmbeds(this.getEmbed(post));
@@ -98,6 +93,5 @@ public class DiscordBot {
             message.addFiles(FileUpload.fromData(file, file.getName()));
         }
         message.queue();
-        System.out.println("Sent");
     }
 }
