@@ -9,6 +9,8 @@ import java.util.Map;
 @DiscriminatorValue("post")
 public class Post extends Media {
 
+    private long mediaId;
+
     public Post(){
 
     }
@@ -17,6 +19,7 @@ public class Post extends Media {
         this.setPath(media.getPath());
         this.setCaption(media.getCaption());
         this.setSource(media.getSource());
+        this.setMediaId(media.getId());
     }
 
     @Transient
@@ -50,5 +53,18 @@ public class Post extends Media {
         if(this.getMetadata() == null || !this.getMetadata().containsKey("description"))
             return null;
         return (String) this.getMetadata().get("description");
+    }
+
+    public long getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(long mediaId) {
+        this.mediaId = mediaId;
+    }
+
+    public String getApiEndpoint(String extra){
+        return "https://www.mammal.org.uk/wp-content/uploads/2019/02/Red-fox-Katie-Nethercoat.jpg";
+        //return System.getenv("APP_URL")+"/api/v1/media/"+this.getMediaId()+extra;
     }
 }

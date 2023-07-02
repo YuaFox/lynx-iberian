@@ -1,5 +1,6 @@
 package dev.yua.lynxiberian.controllers;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import dev.yua.lynxiberian.models.Media;
 import dev.yua.lynxiberian.repositories.MediaRepository;
+import dev.yua.lynxiberian.utils.ImageRender;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +45,17 @@ public class MediaController {
                 URLConnection.guessContentTypeFromName(media.getPath())
         );
         org.apache.commons.io.IOUtils.copy(new FileInputStream(media.getPath()), response.getOutputStream());
+    }
+
+    @GetMapping(path = "/{id}/file/render/full")
+    public void getFileRendered(@PathVariable(name="id") long id, HttpServletResponse response) throws IOException, FontFormatException {
+        Media media = this.repository.findById(id).get();
+        String path = media.getPath();
+        File render = ImageRender.render(new File(media.getPath()), media.getSource());
+        response.setContentType(
+                URLConnection.guessContentTypeFromName(media.getPath())
+        );
+        org.apache.commons.io.IOUtils.copy(new FileInputStream(render), response.getOutputStream());
     }
 
     /*
