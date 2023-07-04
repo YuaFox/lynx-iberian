@@ -3,11 +3,8 @@ package dev.yua.lynxiberian.controllers;
 import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import dev.yua.lynxiberian.models.Media;
@@ -15,6 +12,7 @@ import dev.yua.lynxiberian.repositories.MediaRepository;
 import dev.yua.lynxiberian.utils.ImageRender;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,11 +24,8 @@ public class MediaController {
 
 
     @GetMapping({"","/"})
-    public List<Media> index() {
-        Iterator<Media> source = this.repository.findAll().iterator();
-        List<Media> target = new ArrayList<>();
-        source.forEachRemaining(target::add);
-        return target;
+    public List<Media> index(@RequestParam(value = "page", defaultValue = "0") int page) {
+        return repository.findAll(PageRequest.of(page, 20)).toList();
     }
 
     @GetMapping(path = "/{id}")
