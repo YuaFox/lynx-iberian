@@ -19,7 +19,7 @@ public class ApplicationSecurityConfig {
                 .and()
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/v1/media/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/v1/media/**", "GET")).permitAll()
                         .anyRequest().authenticated())
                 .httpBasic();
         return http.build();

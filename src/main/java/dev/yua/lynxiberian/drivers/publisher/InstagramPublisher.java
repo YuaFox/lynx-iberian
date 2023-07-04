@@ -2,18 +2,14 @@ package dev.yua.lynxiberian.drivers.publisher;
 
 import dev.yua.lynxiberian.bots.DiscordBot;
 import dev.yua.lynxiberian.drivers.PublishDriver;
-import dev.yua.lynxiberian.models.DiscordServer;
 import dev.yua.lynxiberian.models.Post;
-import dev.yua.lynxiberian.repositories.DiscordServerRepository;
 import okhttp3.*;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Map;
 
 @Component
 public class InstagramPublisher extends PublishDriver {
@@ -53,7 +49,7 @@ public class InstagramPublisher extends PublishDriver {
             String caption = post.getCaption();
             if(caption == null) caption = "";
             caption = caption+" "+System.getenv("INSTAGRAM_TAGS");
-            String url = post.getApiEndpoint("/file/render/full");
+            String url = post.getApiEndpoint("/file?text=source");
             Response r = this.post(this.createMedia(caption, url));
             if(r.code() != 200){
                 System.out.println("Error: "+r.code());
