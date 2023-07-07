@@ -38,6 +38,10 @@ public class FlickrProcessor extends ProcessorDriver {
             String id = object.getString("id");
             String source = object.getString("source");
             String mediaUrl = object.getString("media");
+            String author = null;
+            if(object.has("author")) {
+                author = object.getString("author");
+            }
 
             if(repository.flickrId(id) == null){
                 File download = LynxiberianApplication.http.download(
@@ -47,9 +51,14 @@ public class FlickrProcessor extends ProcessorDriver {
                 media.setPath(download.getPath());
                 media.setSource(source);
                 media.setFlickrId(id);
+                media.setAuthor(author);
                 return processorResult.setMediaStatus(GatherMediaStatus.OK).addMedia(media);
             }else{
-                return processorResult.setMediaStatus(GatherMediaStatus.DUPLICATED);
+                FlickrMedia media = repository.flickrId(id);
+                media.setSource(source);
+                media.setFlickrId(id);
+                media.setAuthor(author);
+                return processorResult.setMediaStatus(GatherMediaStatus.OK).addMedia(media);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

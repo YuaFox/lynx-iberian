@@ -17,15 +17,15 @@ import org.hibernate.annotations.DiscriminatorOptions;
 public class Media implements Serializable, Cloneable {
 
     @Serial
-    private static final long serialVersionUID = 4L;
+    private static final long serialVersionUID = 5L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String caption;
     private String path;
-
     private String source;
+    private String author;
 
     @ManyToOne
     @JsonIgnore
@@ -83,5 +83,14 @@ public class Media implements Serializable, Cloneable {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

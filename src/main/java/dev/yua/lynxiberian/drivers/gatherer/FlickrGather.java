@@ -3,6 +3,7 @@ package dev.yua.lynxiberian.drivers.gatherer;
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.REST;
+import com.flickr4java.flickr.people.User;
 import com.flickr4java.flickr.photos.Photo;
 import com.flickr4java.flickr.photos.PhotoList;
 import com.flickr4java.flickr.photos.SearchParameters;
@@ -16,6 +17,8 @@ import dev.yua.lynxiberian.utils.reddit.RedditApi;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 
 @Component
@@ -71,6 +74,17 @@ public class FlickrGather extends GathererDriver {
                     object.put("id", p.getId());
                     object.put("source", p.getUrl());
                     object.put("media", p.getLargeUrl());
+                    if(p.getOwner() != null) {
+                        System.out.println(p.getOwner().getId());
+                        User info = f.getPeopleInterface().getInfo(p.getOwner().getId());
+                        String author = info.getRealName();
+                        if(author == null)
+                            author = info.getUsername();
+                        System.out.println(author);
+                        if(author != null && !author.isEmpty()) {
+                            object.put("author",author);
+                        }
+                    }
 
                     GatherMediaStatus result = this.save("flickr", object, gatherRequest);
                     if(result == GatherMediaStatus.OK) {

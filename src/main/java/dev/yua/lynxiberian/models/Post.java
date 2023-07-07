@@ -20,6 +20,7 @@ public class Post extends Media {
         this.setCaption(media.getCaption());
         this.setSource(media.getSource());
         this.setMediaId(media.getId());
+        this.setAuthor(media.getAuthor());
     }
 
     @Transient
