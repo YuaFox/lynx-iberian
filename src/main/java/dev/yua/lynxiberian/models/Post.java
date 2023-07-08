@@ -9,6 +9,8 @@ import java.util.Map;
 @DiscriminatorValue("post")
 public class Post extends Media {
 
+    private long mediaId;
+
     public Post(){
 
     }
@@ -17,6 +19,8 @@ public class Post extends Media {
         this.setPath(media.getPath());
         this.setCaption(media.getCaption());
         this.setSource(media.getSource());
+        this.setMediaId(media.getId());
+        this.setAuthor(media.getAuthor());
     }
 
     @Transient
@@ -50,5 +54,17 @@ public class Post extends Media {
         if(this.getMetadata() == null || !this.getMetadata().containsKey("description"))
             return null;
         return (String) this.getMetadata().get("description");
+    }
+
+    public long getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(long mediaId) {
+        this.mediaId = mediaId;
+    }
+
+    public String getApiEndpoint(String extra){
+        return System.getenv("APP_URL")+"/api/v1/media/"+this.getMediaId()+extra;
     }
 }

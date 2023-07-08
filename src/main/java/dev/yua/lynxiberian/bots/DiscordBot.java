@@ -10,6 +10,8 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.StandardGuildMessageChannel;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.requests.restaction.MessageCreateAction;
 import net.dv8tion.jda.api.utils.FileUpload;
 import org.springframework.stereotype.Component;
@@ -73,28 +75,29 @@ public class DiscordBot {
     }
 
     public void post(DiscordServer server, Post post){
-        System.out.println(server.getGuild());
-        if(!server.getScheduleTime().isNow()){
-            System.out.println("Not now next schedule at "+server.getScheduleTime().getValue().next(LocalDateTime.now().minusNanos(1)));
-            System.out.println("Current time "+LocalDateTime.now());
-            return;
-        }
+        try {
+            if (!server.getScheduleTime().isNow()) {
+                return;
+            }
 
-        Guild guild = this.bot.getGuildById(server.getGuild());
-        if(guild == null) return;
-        System.out.println(server.getChannel());
-        TextChannel channel = guild.getTextChannelById(server.getChannel());
-        if(channel == null){
-            System.out.println("No channel defined");
-            return;
-        }
-        MessageCreateAction message = channel.sendMessageEmbeds(this.getEmbed(post));
+            Guild guild = this.bot.getGuildById(server.getGuild());
+            if (guild == null) return;
+            StandardGuildMessageChannel channel = guild.getTextChannelById(server.getChannel());
+            if (channel == null) channel = guild.getNewsChannelById(server.getChannel());
+            guild.getNewsChannelById(server.getChannel());
+            if (channel == null) {
+                return;
+            }
 
-        if(post.getPath() != null) {
-            File file = new File(post.getPath());
-            message.addFiles(FileUpload.fromData(file, file.getName()));
+            MessageCreateAction message = channel.sendMessageEmbeds(this.getEmbed(post));
+
+            if (post.getPath() != null) {
+                File file = new File(post.getPath());
+                message.addFiles(FileUpload.fromData(file, file.getName()));
+            }
+            message.queue();
+        }catch (InsufficientPermissionException e){
+
         }
-        message.queue();
-        System.out.println("Sent");
     }
 }
