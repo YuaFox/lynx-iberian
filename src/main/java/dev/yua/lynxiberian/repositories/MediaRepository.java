@@ -12,4 +12,9 @@ public interface MediaRepository extends CrudRepository<Media, Long>, PagingAndS
 
     @Query("select m from Media m JOIN m.bucket where m.bucket = :bucket ORDER BY RAND() LIMIT 1")
     Media getRandomMedia(Bucket bucket);
+
+    @Query("select count(id) from Media")
+    int getSize();
+
+
 }

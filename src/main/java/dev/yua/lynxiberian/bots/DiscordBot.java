@@ -67,9 +67,13 @@ public class DiscordBot {
             embedBuilder.setImage("attachment://"+new File(post.getPath()).getName());
         if(post.getDescription() != null)
             embedBuilder.setDescription(post.getDescription());
+        if(post.getAuthor() != null){
+            embedBuilder.addField(new MessageEmbed.Field("Author", post.getAuthor(), false));
+        }else{
+            embedBuilder.addField(new MessageEmbed.Field("Author", "Unknown", false));
+        }
         if(post.getUrl() != null) {
-            embedBuilder.addField(new MessageEmbed.Field("Source", "", true));
-            embedBuilder.addField(new MessageEmbed.Field(post.getUrl(), "", true));
+            embedBuilder.addField(new MessageEmbed.Field("Source", post.getUrl(), false));
         }
         return embedBuilder.build();
     }

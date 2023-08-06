@@ -12,6 +12,7 @@ import dev.yua.lynxiberian.models.Media;
 import dev.yua.lynxiberian.repositories.MediaRepository;
 import dev.yua.lynxiberian.utils.ImageRender;
 import jakarta.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,28 @@ public class MediaController {
         return repository.findAll(PageRequest.of(page, 20)).stream().filter(
                 (Media media) -> media.getBucket().getName().equals(bucket)
         ).toList();
+    }
+
+    @GetMapping("/random")
+    public Media random(
+            @RequestParam(value = "bucket", defaultValue = "*") String bucket
+    ) {
+        if(bucket.equals("*")){
+            return repository.getRandomMedia();
+        }else{
+            return null;
+        }
+    }
+
+    @GetMapping("/size")
+    public JSONObject size(
+            @RequestParam(value = "bucket", defaultValue = "*") String bucket
+    ) {
+        if(bucket.equals("*")){
+            return new JSONObject().put("size", repository.getSize());
+        }else{
+            return new JSONObject().put("size", 0);
+        }
     }
 
     @GetMapping(path = "/{id}")
@@ -78,41 +101,4 @@ public class MediaController {
         ImageIO.write(image, "jpg", os);
         org.apache.commons.io.IOUtils.copy(new ByteArrayInputStream(os.toByteArray()), response.getOutputStream());
     }
-
-    /*
-
-    @GetMapping(path = "/{id}/file/render/full")
-    public void getFileRendered(@PathVariable(name="id") long id, HttpServletResponse response) throws IOException, FontFormatException {
-        Media media = this.repository.findById(id).get();
-        String path = media.getPath();
-        File render = ImageRender.render(new File(media.getPath()), media.getSource());
-        response.setContentType(
-                URLConnection.guessContentTypeFromName(media.getPath())
-        );
-        org.apache.commons.io.IOUtils.copy(new FileInputStream(render), response.getOutputStream());
-    }
-
-    @GetMapping(path = "/{id}/file/render/vertical")
-    public void getFileRenderVertical(@PathVariable(name="id") long id, HttpServletResponse response) throws IOException, FontFormatException {
-        Media media = this.repository.findById(id).get();
-        String path = media.getPath();
-        File render = ImageRender.renderVertical(new File(media.getPath()), media.getSource());
-        response.setContentType(
-                URLConnection.guessContentTypeFromName(media.getPath())
-        );
-        org.apache.commons.io.IOUtils.copy(new FileInputStream(render), response.getOutputStream());
-    }
-
-    /*
-    @DeleteMapping(path = "/{name}")
-    public ResponseEntity<String> delete(@PathVariable(name="name") String name){
-        Bucket bucket = repository.getBucketByName(name);
-        if(bucket != null){
-            repository.delete(bucket);
-            return ResponseEntity.status(HttpStatus.OK).body("Ok");
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bucket does not exists");
-        }
-    }
-    */
 }

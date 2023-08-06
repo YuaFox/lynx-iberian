@@ -37,9 +37,24 @@ public class TelegramPublisher extends PublishDriver {
     @Override
     public void publish(Post post) {
         SendPhoto sendPhoto = new SendPhoto(this.chatId, new File(post.getPath()));
+
+        String caption = "";
         if(post.getCaption() != null) {
-            sendPhoto.caption(post.getCaption());
+            caption += post.getCaption() + "\n";
         }
+
+        if(post.getAuthor() != null) {
+            caption += "\n\n\uD83D\uDCF8 " +post.getAuthor() + "\n";
+        }else{
+            caption += "\uD83D\uDCF8 Unknown" + "\n";
+        }
+
+        if(post.getUrl() != null) {
+            caption += "\uD83D\uDD17 " +post.getUrl() + "\n";
+        }
+
+        sendPhoto.caption(caption);
+
         bot.execute(sendPhoto);
     }
 }
