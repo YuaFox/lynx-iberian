@@ -10,6 +10,7 @@ sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -37,6 +38,8 @@ dependencies {
 	implementation 'com.tumblr:jumblr:0.0.13'
 	implementation 'net.dv8tion:JDA:5.0.0-beta.5'
 	implementation 'com.flickr4java:flickr4java:3.0.8'
+
+	implementation 'com.github.uakihir0:bsky4j:0.5.2'
 
 
 

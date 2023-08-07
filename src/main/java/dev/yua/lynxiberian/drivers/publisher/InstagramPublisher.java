@@ -34,11 +34,6 @@ public class InstagramPublisher extends PublishDriver {
     }
 
     @Override
-    public boolean isReady() {
-        return DiscordBot.getBot().enabled();
-    }
-
-    @Override
     public void publish(Post post) {
         try {
             // TODO: remove hardcoded limit
