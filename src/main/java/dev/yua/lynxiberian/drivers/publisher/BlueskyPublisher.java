@@ -30,8 +30,6 @@ import java.util.List;
 @Component
 public class BlueskyPublisher extends PublishDriver {
 
-    private String accessJwt = null;
-
     @Override
     public void onLoad() {
         if(System.getenv("BLUESKY_HANDLE") != null && System.getenv("BLUESKY_PASSWORD") != null){
@@ -44,7 +42,7 @@ public class BlueskyPublisher extends PublishDriver {
                                     .build()
                     );
 
-            accessJwt = response.get().getAccessJwt();
+            String accessJwt = response.get().getAccessJwt();
             if(accessJwt != null){
                 this.setReady(true);
             }
@@ -58,6 +56,17 @@ public class BlueskyPublisher extends PublishDriver {
 
     @Override
     public void publish(Post post) {
+        Response<ServerCreateSessionResponse> response = BlueskyFactory
+                .getInstance(Service.BSKY_SOCIAL.getUri())
+                .server().createSession(
+                        ServerCreateSessionRequest.builder()
+                                .identifier(System.getenv("BLUESKY_HANDLE"))
+                                .password(System.getenv("BLUESKY_PASSWORD"))
+                                .build()
+                );
+
+        String accessJwt = response.get().getAccessJwt();
+
         String caption = "";
         if(post.getCaption() != null) {
             caption += post.getCaption() + "\n";
@@ -83,6 +92,7 @@ public class BlueskyPublisher extends PublishDriver {
                                     .name("image.png")
                                     .build()
                     );
+
 
             EmbedImages imagesMain = new EmbedImages();
             {
