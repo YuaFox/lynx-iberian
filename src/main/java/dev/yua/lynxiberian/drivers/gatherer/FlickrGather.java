@@ -33,7 +33,12 @@ public class FlickrGather extends GathererDriver {
 
     @Override
     public void onLoad() {
-        this.f = new Flickr(System.getenv("FLICKR_KEY"), System.getenv("FLICKR_SECRET"), new REST());
+        if(System.getenv("FLICKR_KEY") != null) {
+            this.f = new Flickr(System.getenv("FLICKR_KEY"), System.getenv("FLICKR_SECRET"), new REST());
+            this.setReady(true);
+        }else{
+            this.setReady(false);
+        }
     }
 
     @Override
