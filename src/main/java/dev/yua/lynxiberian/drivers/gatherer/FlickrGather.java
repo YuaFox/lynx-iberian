@@ -61,12 +61,11 @@ public class FlickrGather extends GathererDriver {
     private void search(GatherRequest gatherRequest, GatherResult gatherResult, String license){
         System.out.println("Find started!");
         SearchParameters searchParameters = new SearchParameters();
-        searchParameters.setText("fox");
+        //searchParameters.setText("fox");
         searchParameters.setGroupId("29106652@N00");
         searchParameters.setLicense(license);
-        int duplicatedAmount = 0;
         try {
-            for(int i = 0; duplicatedAmount < 5; i++) {
+            for(int i = 0; ; i++) {
                 System.out.println("Finding set...");
                 PhotoList<Photo> photos = f.getPhotosInterface().search(searchParameters, 30, i);
                 if(photos.isEmpty()) {
@@ -96,13 +95,6 @@ public class FlickrGather extends GathererDriver {
                         System.out.println("Saved image");
                         gatherResult.addMediaAdded();
                     }
-                    /*
-                    if (result == GatherMediaStatus.DUPLICATED)
-                        duplicatedAmount++;
-                    if (duplicatedAmount == 5)
-                        break;
-                        *
-                     */
 
                     Thread.sleep(2000);
                 }
