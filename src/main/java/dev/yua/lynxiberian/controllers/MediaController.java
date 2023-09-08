@@ -98,4 +98,29 @@ public class MediaController {
         ImageIO.write(image, "jpg", os);
         org.apache.commons.io.IOUtils.copy(new ByteArrayInputStream(os.toByteArray()), response.getOutputStream());
     }
+
+    @GetMapping(path = "/random/file")
+    public void getRandomFile(
+            @RequestParam(value = "format", defaultValue = "original") String format,
+            @RequestParam(value = "text", defaultValue = "none") String text,
+            HttpServletResponse response
+    ) throws IOException, FontFormatException {
+        Media media = repository.getRandomMedia();
+        BufferedImage image = ImageIO.read(new File(media.getPath()));
+        if(format.equals("vertical")){
+            image = ImageRender.renderVertical(image);
+        }
+
+        if(text.equals("source")){
+            image = ImageRender.renderText(image, media.getSource());
+        }
+
+        response.setContentType(
+                URLConnection.guessContentTypeFromName(media.getPath())
+        );
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write(image, "jpg", os);
+        org.apache.commons.io.IOUtils.copy(new ByteArrayInputStream(os.toByteArray()), response.getOutputStream());
+    }
 }
