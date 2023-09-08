@@ -22,13 +22,17 @@ public class TimeListener implements EventListener<TimeEvent, EventResult> {
     public EventResult onEvent(TimeEvent event) {
         if(event.getTimeName().equals("post")){
             for(PublishDriver publishDriver : LynxiberianApplication.getDriverManager().getPublishDrivers()){
-                if(publishDriver.isReady()){
-                    ExplorerRequest explorerRequest = new ExplorerRequest();
-                    explorerRequest.setBucket(bucketRepository.getBucketByName("default"));
+                try {
+                    if (publishDriver.isReady()) {
+                        ExplorerRequest explorerRequest = new ExplorerRequest();
+                        explorerRequest.setBucket(bucketRepository.getBucketByName("default"));
 
-                    Media random = LynxiberianApplication.getDriverManager().getExplorerDriver("random").getMedia(explorerRequest);
+                        Media random = LynxiberianApplication.getDriverManager().getExplorerDriver("random").getMedia(explorerRequest);
 
-                    publishDriver.publish(new Post(random));
+                        publishDriver.publish(new Post(random));
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
                 }
             }
         }
