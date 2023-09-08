@@ -2,12 +2,9 @@ package dev.yua.lynxiberian.controllers;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.URLConnection;
 import java.util.List;
-
-import dev.yua.lynxiberian.models.Bucket;
 import dev.yua.lynxiberian.models.Media;
 import dev.yua.lynxiberian.repositories.MediaRepository;
 import dev.yua.lynxiberian.utils.ImageRender;

@@ -51,7 +51,7 @@ public class TumblrPublisher extends PublishDriver {
                 tumblrPost.setPhoto(new Photo(new File(post.getPath())));
             }
             if(post.getSource() != null){
-                tumblrPost.setLinkUrl(post.getSource());
+                tumblrPost.setSource(post.getSource());
             }
 
             tumblrPost.setTags(this.defaultTags);
