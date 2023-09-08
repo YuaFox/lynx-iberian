@@ -1,17 +1,23 @@
 package dev.yua.lynxiberian.drivers.publisher;
 
 import com.tumblr.jumblr.JumblrClient;
+import com.tumblr.jumblr.responses.ResponseWrapper;
 import com.tumblr.jumblr.types.Photo;
 import com.tumblr.jumblr.types.PhotoPost;
 import dev.yua.lynxiberian.drivers.PublishDriver;
 import dev.yua.lynxiberian.models.Post;
+import org.json.JSONObject;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Verb;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class TumblrPublisher extends PublishDriver {
@@ -50,13 +56,16 @@ public class TumblrPublisher extends PublishDriver {
             }else {
                 tumblrPost.setPhoto(new Photo(new File(post.getPath())));
             }
-            if(post.getSource() != null){
-                tumblrPost.setSource(post.getSource());
-            }
 
             tumblrPost.setTags(this.defaultTags);
 
+            if(post.getSource() != null){
+                tumblrPost.setCaption(String.format("<a href='%s'>Source</a>", post.getSource()));
+            }
+
             tumblrPost.save();
+
+
         } catch (IllegalAccessException | InstantiationException | IOException e) {
             throw new RuntimeException(e);
         }
