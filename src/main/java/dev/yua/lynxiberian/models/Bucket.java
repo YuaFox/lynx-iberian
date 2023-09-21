@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import dev.yua.lynxiberian.LynxiberianApplication;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,7 +13,7 @@ public class Bucket implements Serializable {
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static Bucket getBucket(String name) {
-        return new Bucket(name);
+        return LynxiberianApplication.getBucket(name).orElse(new Bucket(name));
     }
 
     @Serial
@@ -50,5 +51,9 @@ public class Bucket implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean exists(){
+        return this.id != 0;
     }
 }

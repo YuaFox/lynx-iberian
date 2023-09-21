@@ -13,6 +13,8 @@ import dev.yua.lynxiberian.drivers.DriverManager;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 
+import java.util.Optional;
+
 @SpringBootApplication
 public class LynxiberianApplication {
 
@@ -41,6 +43,10 @@ public class LynxiberianApplication {
 		return instance.eventManager;
 	}
 	public static CommandInputManager getCommandInputManager() { return instance.commandInputManager; }
+
+	public static Optional<Bucket> getBucket(String name){
+		return Optional.ofNullable(instance.bucketRepository.getBucketByName(name));
+	}
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void onLoad() {

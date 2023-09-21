@@ -23,13 +23,9 @@ public class GathererController {
             @PathVariable(required=false,name="driver") String driver,
             @RequestBody GatherRequest gatherRequest
             ){
-        Bucket provisionalBucket = gatherRequest.getBucket();
-        if(provisionalBucket != null){
-            if(provisionalBucket.getName() != null){
-                Bucket bucket = this.bucketRepository.getBucketByName(provisionalBucket.getName());
-                if(bucket == null) return null;
-                gatherRequest.setBucket(bucket);
-            }
+        Bucket bucket = gatherRequest.getBucket();
+        if(bucket.exists()){
+            gatherRequest.setBucket(bucket);
         }
         return LynxiberianApplication.getDriverManager().getGathererDriver(driver).gather(gatherRequest);
     }
