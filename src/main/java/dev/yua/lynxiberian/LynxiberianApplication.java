@@ -27,7 +27,6 @@ public class LynxiberianApplication {
 	private EventManager eventManager;
 	@Autowired
 	private CommandInputManager commandInputManager;
-
 	@Autowired
 	private BucketRepository bucketRepository;
 
@@ -52,10 +51,9 @@ public class LynxiberianApplication {
 	public void onLoad() {
 		instance = this;
 
-		Bucket defaultBucket = bucketRepository.getBucketByName("default");
-		if(defaultBucket == null){
-			this.bucketRepository.save(new Bucket("default"));
-		}
+		LynxiberianApplication.getBucket("default").ifPresentOrElse(
+				(Bucket b) -> {},
+				() -> this.bucketRepository.save(new Bucket("default")));
 
 		driverManager.triggerInit();
 		commandInputManager.onLoad();

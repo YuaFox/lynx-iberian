@@ -1,41 +1,46 @@
 package dev.yua.lynxiberian.drivers.gatherer;
 
-import dev.yua.lynxiberian.models.Bucket;
-import dev.yua.lynxiberian.models.GatherRequest;
-import dev.yua.lynxiberian.models.GatherResult;
+import dev.yua.lynxiberian.models.*;
 import dev.yua.lynxiberian.drivers.GathererDriver;
 import dev.yua.lynxiberian.repositories.BucketRepository;
+import lombok.Getter;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Component
 public class LocalGatherDriver extends GathererDriver {
 
+    @Getter(lazy = true)
+    private final String name = "local";
+
     @Autowired
     private BucketRepository bucketRepository;
 
-    File folder;
-    File folderStorage;
+    private final File folder;
+    private final File folderStorage;
 
-    @Override
-    public String getName() { return "local"; }
+    public LocalGatherDriver(){
+        this.folder = new File("config/local");
+        this.folderStorage = new File("storage/local");
+    }
 
     @Override
     public void onLoad() {
-        this.folder = new File("config/local");
-        this.folderStorage = new File("storage/local");
         this.folder.mkdirs();
         this.folderStorage.mkdirs();
-
         this.bucketRepository.findAll().forEach(
-                (Bucket bucket) -> new File(this.folder, bucket.getName()).mkdir()
+            (Bucket bucket) -> new File(this.folder, bucket.getName()).mkdir()
         );
-
         this.gather(null);
     }
 
@@ -52,11 +57,18 @@ public class LocalGatherDriver extends GathererDriver {
 
         for(File file : files){
             if(file.isDirectory()) {
-                this.gather(new GatherRequest().setBucket(bucketRepository.getBucketByName(file.getName())), file);
+                this.gather(new GatherRequest(bucketRepository.getBucketByName(file.getName()), null), file);
             }else{
-                JSONObject object = new JSONObject();
-                object.put("path", file.getPath());
-                this.save("local", object, gatherRequest);
+                Path source = Paths.get(file.getPath());
+                Path destination = Paths.get("storage/local/"+source.getFileName());
+                try {
+                    Files.move(source, destination, StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                Media media = new Media();
+                media.setPath(destination.toString());
+                this.save(gatherRequest, media);
             }
         }
         return gatherResult;

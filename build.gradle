@@ -26,6 +26,10 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	compileOnly 'org.projectlombok:lombok:1.18.30'
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+
 	implementation 'org.json:json:20230227'
 
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5

@@ -10,14 +10,12 @@ public class DriverManager {
 
     private List<Driver> drivers;
     private Map<String, GathererDriver> gathererDrivers;
-    private Map<String, ProcessorDriver> processorDrivers;
     private Map<String, ExplorerDriver> explorerDrivers;
     private Map<String, PublishDriver> publishDrivers;
 
     public DriverManager(){
         this.drivers = new LinkedList<>();
         this.gathererDrivers = new HashMap<>();
-        this.processorDrivers = new HashMap<>();
         this.explorerDrivers = new HashMap<>();
         this.publishDrivers = new HashMap<>();
     }
@@ -32,8 +30,6 @@ public class DriverManager {
         System.out.println("Adding driver: "+driver.getName());
         if(driver instanceof GathererDriver)
             this.gathererDrivers.put(driver.getName(), (GathererDriver) driver);
-        else if(driver instanceof ProcessorDriver)
-            this.processorDrivers.put(driver.getName(), (ProcessorDriver) driver);
         else if(driver instanceof ExplorerDriver)
             this.explorerDrivers.put(driver.getName(), (ExplorerDriver) driver);
         else if(driver instanceof PublishDriver)
@@ -43,18 +39,12 @@ public class DriverManager {
     public void triggerInit() {
         this.drivers.forEach(Driver::onLoad);
     }
-
     public GathererDriver getGathererDriver(String id){
         return this.gathererDrivers.get(id);
     }
-    public ProcessorDriver getProcessorDriver(String id){
-        return this.processorDrivers.get(id);
-    }
-
     public ExplorerDriver getExplorerDriver(String id){
         return this.explorerDrivers.get(id);
     }
-
     public PublishDriver getPublishDriver(String id){
         return this.publishDrivers.get(id);
     }

@@ -6,6 +6,9 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import dev.yua.lynxiberian.LynxiberianApplication;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name="buckets")
@@ -21,9 +24,11 @@ public class Bucket implements Serializable {
 
     @Id
     @GeneratedValue
+    @Getter
     private final long id;
 
     @Column(unique = true, nullable = false)
+    @Getter @Setter
     private String name;
 
 
@@ -38,18 +43,6 @@ public class Bucket implements Serializable {
 
     public Bucket(int id, String name){
         this.id = id;
-        this.name = name;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
     }
 

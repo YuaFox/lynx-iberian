@@ -7,24 +7,25 @@ import com.flickr4java.flickr.people.User;
 import com.flickr4java.flickr.photos.Photo;
 import com.flickr4java.flickr.photos.PhotoList;
 import com.flickr4java.flickr.photos.SearchParameters;
-import com.flickr4java.flickr.photos.licenses.License;
-import dev.yua.lynxiberian.drivers.GatherMediaStatus;
+import dev.yua.lynxiberian.LynxiberianApplication;
 import dev.yua.lynxiberian.drivers.GathererDriver;
-import dev.yua.lynxiberian.models.GatherRequest;
-import dev.yua.lynxiberian.models.GatherResult;
-import dev.yua.lynxiberian.models.RedditFilter;
-import dev.yua.lynxiberian.utils.reddit.RedditApi;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import dev.yua.lynxiberian.models.*;
+import dev.yua.lynxiberian.repositories.FlickrMediaRepository;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 
 @Component
 public class FlickrGather extends GathererDriver {
-
     private Flickr f;
+    private File folderStorage;
+    @Autowired
+    public FlickrMediaRepository repository;
 
     @Override
     public String getName() {
@@ -33,6 +34,8 @@ public class FlickrGather extends GathererDriver {
 
     @Override
     public void onLoad() {
+        this.folderStorage = new File("storage/flickr");
+        this.folderStorage.mkdirs();
         if(System.getenv("FLICKR_KEY") != null) {
             this.f = new Flickr(System.getenv("FLICKR_KEY"), System.getenv("FLICKR_SECRET"), new REST());
             this.setReady(true);
@@ -59,45 +62,37 @@ public class FlickrGather extends GathererDriver {
     }
 
     private void search(GatherRequest gatherRequest, GatherResult gatherResult, String license){
-        System.out.println("Find started!");
         SearchParameters searchParameters = new SearchParameters();
         //searchParameters.setText("fox");
         searchParameters.setGroupId("29106652@N00");
         searchParameters.setLicense(license);
         try {
-            for(int i = 0; ; i++) {
-                System.out.println("Finding set...");
-                PhotoList<Photo> photos = f.getPhotosInterface().search(searchParameters, 30, i);
-                if(photos.isEmpty()) {
-                    System.out.println("Finished!");
-                    break;
-                }
-
+            PhotoList<Photo> photos;
+            for(int i = 0; !(photos = f.getPhotosInterface().search(searchParameters, 30, i)).isEmpty(); i++) {
                 for (Photo p : photos) {
-                    JSONObject object = new JSONObject();
-                    object.put("id", p.getId());
-                    object.put("source", p.getUrl());
-                    object.put("media", p.getLargeUrl());
-                    if(p.getOwner() != null) {
-                        System.out.println(p.getOwner().getId());
-                        User info = f.getPeopleInterface().getInfo(p.getOwner().getId());
-                        String author = info.getRealName();
-                        if(author == null)
-                            author = info.getUsername();
-                        System.out.println(author);
-                        if(author != null && !author.isEmpty()) {
-                            object.put("author",author);
+                    try {
+                        if (repository.flickrId(p.getId()) == null) continue;
+
+                        FlickrMedia media = new FlickrMedia();
+
+                        media.setFlickrId(p.getId());
+                        media.setSource(p.getUrl());
+                        media.setPath(
+                                LynxiberianApplication.http.download(
+                                        p.getLargeUrl(), this.folderStorage.getPath() + "/" + FilenameUtils.getName(p.getLargeUrl())).getPath()
+                        );
+                        if (p.getOwner() != null) {
+                            User info = f.getPeopleInterface().getInfo(p.getOwner().getId());
+                            String author = Optional.ofNullable(info.getRealName()).orElse(info.getUsername());
+                            media.setAuthor(author);
                         }
-                    }
 
-                    GatherMediaStatus result = this.save("flickr", object, gatherRequest);
-                    if(result == GatherMediaStatus.OK) {
-                        System.out.println("Saved image");
-                        gatherResult.addMediaAdded();
+                        this.save(gatherRequest, media);
+                    }catch (IOException e){
+                        e.printStackTrace();
                     }
-
-                    Thread.sleep(2000);
                 }
+                Thread.sleep(2000);
             }
         } catch (FlickrException | InterruptedException e) {
             throw new RuntimeException(e);

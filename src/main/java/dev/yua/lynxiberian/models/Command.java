@@ -1,41 +1,16 @@
 package dev.yua.lynxiberian.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 public class Command {
+    @Getter @Setter
     private String name;
+    @Getter @Setter
     private String description;
+    @Getter @Setter
     private List<CommandArgument> arguments;
+    @Getter @Setter
     private boolean adminRequired;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<CommandArgument> getArguments() {
-        return arguments;
-    }
-
-    public void setArguments(List<CommandArgument> arguments) {
-        this.arguments = arguments;
-    }
-
-    public boolean isAdminRequired() {
-        return adminRequired;
-    }
-
-    public void setAdminRequired(boolean adminRequired) {
-        this.adminRequired = adminRequired;
-    }
 }
